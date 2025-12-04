@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+        <th>SI.NO</th>
+        <th>Patient Name</th>
+        <th>Age</th>
+        <th>Sex</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+    <tbody>
+      {% for i in patients %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.PATIENTID.name}}</td>
+        <td>{{i.PATIENTID.age}}</td>
+        <td>{{i.PATIENTID.sex}}</td>
+        
+        <td>
+          <a href="/Viewprescription">View prescription</a>
+        </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+</body>
+</html>

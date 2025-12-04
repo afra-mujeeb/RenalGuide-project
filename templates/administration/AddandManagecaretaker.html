@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <h2>Caretaker Management</h2>
+  <a href="/AddCaretaker">Add Caretaker</a><br><br>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>SI.NO</th>
+            <th>Caretaker Name</th>
+            <th>age</th>
+            <th>Sex</th>
+            <th>Phone number</th>
+            <th>email</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for i in caretaker %}
+        <tr>
+        <td>{{forloop.counter}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.age}}</td>
+            <td>{{i.sex}}</td>
+            <td>{{i.phonenumber}}</td>
+            <td>{{i.email}}</td>
+            <td>{{i.status }}</td>
+            <td>
+          <a href="/EditCaretaker/{{i.id}}">Edit</a>
+          <a href="/DeleteCaretaker/{{i.id}}" onclick="return confirm('Are you sure you want to delete')">Delete</a>
+        </td>
+            <td>
+                {% if i.status == "pending" %}
+           <a href="/acceptcaretaker/{{i.id}}"><button>accept</button></a>
+                <a href="/rejectcaretaker/{{i.id}}"><button>reject</button></a>
+
+            {% elif i.status == "rejected" %}
+                <a href="/acceptcaretaker/{{i.id}}"><button>accept</button></a>
+
+            {% else %}
+                <a href="/rejectcaretaker/{{i.id}}"><button>reject</button></a>
+            {% endif %}
+        </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

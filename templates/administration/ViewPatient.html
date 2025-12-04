@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+            <TH>SI NO</TH>
+            <th>Patient Name</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Caretaker Name</th>
+            <th>Caretaker Phone number</th>
+        </tr>
+         {% for i in patient %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.age}}</td>
+            <td>{{i.sex}}</td>
+            <td>{{i.CARETAKERID.name}}</td>
+            <td>{{i.CARETAKERID.phonenumber}}</td>
+        </tr>
+         {% endfor %}
+    </table>
+</body>
+</html>

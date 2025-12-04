@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <form method="POST">
+       {% csrf_token %}
+      
+        <input type="text" placeholder="Doctor Name" name="name" value="{{doctor.name}}"><br><br>
+        <input type="text" placeholder="Phone number" name="phonenumber" value="{{doctor.phonenumber}}"><br><br>
+        <input type="text" placeholder="age" name="age" value="{{doctor.age}}"><br><br>
+        <input type="text" placeholder="Sex" name="sex" value="{{doctor.sex}}"><br><br>
+        <input type="text" placeholder="E-mail" name="email" readonly value="{{doctor.email}}" ><br><br>
+        <input type="text" placeholder="Qualification" name="qualification" value="{{doctor.qualification}}"><br><br>
+        <input type="text" placeholder="Experience" name="experience" value="{{doctor.experience}}"><br><br>
+        <button type="submit">submit</button>
+    </form>  
+</body>
+</html>

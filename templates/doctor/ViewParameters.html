@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <tr>
+        <form action="ViewParameters1" method="post">
+            {% csrf_token %}
+        <td colspan="13">
+            <select name="patientid" id="">
+                {% for i in obj %}
+                <option value="{{i.PATIENTID.id}}">{{ i.PATIENTID.name }}</option>
+                {% endfor %}
+
+            </select>
+            <input type="submit" name="" value="search" id="">
+        </td>
+        </form>
+    </tr>
+    <tr>
+        <th colspan="2"></th>
+        <th colspan="5">Pre HD</th>
+        <th colspan="5">Post HD</th>
+    </tr>
+
+    <tr>
+        <th>SI.NO</th>       
+        <th>Date</th>
+        <th>No.of HD</th>
+        <th>BP</th>
+        <th>Temp</th>
+        <th>Wt</th>
+        <th>Wt.gain</th>
+        <th>BP</th>
+        <th>Wt</th>
+        <th>Wt.loss</th>
+        <th>Next Appointment</th>
+    </tr>
+
+    {% for pre, post in combined %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ pre.date }}</td>
+
+        <!-- Pre HD -->
+        <td>{{ pre.numberofHD }}</td>
+        <td>{{ pre.bloodpressure }}</td>
+        <td>{{ pre.temperature }}</td>
+        <td>{{ pre.weight }}</td>
+        <td>{{ pre.weightgain }}</td>
+
+        <!-- Post HD -->
+        <td>{{ post.bloodpressure }}</td>
+        <td>{{ post.weight }}</td>
+        <td>{{ post.weightloss }}</td>
+        <td>{{ post.nextappointment }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

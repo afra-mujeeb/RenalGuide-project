@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Doctor Management</h2>
+  <a href="/AddDoctor">Add doctor</a><br><br>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+      <tr>
+        
+        <th>SI.NO</th>
+        <!-- <th>DOCTOR ID</th> -->
+        <th>IMAGE</th>
+        <th>DOCTOR NAME</th>
+        <th>PHONE NUMBER</th>
+        <th>SEX</th>
+        <th>E-MAIL</th>
+        <th>EXPERIENCE</th>
+        <th>QUALIFICATION</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+    <tbody>
+      {% for i in doctor %}   
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td><img src="{{i.image.url}}" alt="" height="60px" width="60px"></i></td>
+        <td>{{i.name}}</td>
+        <td>{{i.phonenumber}}</td>
+        <td>{{i.sex}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.experience}}</td>
+        <td>{{i.qualification}}</td>
+        
+        <td>
+          <a href="/EditDoctor/{{i.id}}">Edit</a>
+          <a href="/DeleteDoctor/{{i.LOGINID.id}}" onclick="return confirm('Are you sure you want to delete')">Delete</a>
+        </td>
+      {% endfor %}
+    </table>
+</body>
+</html>

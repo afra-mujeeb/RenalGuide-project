@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prescriptions</title>
+</head>
+<body>
+
+<h2>Prescription List</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Patient Name</th>
+        <th>Prescription</th>
+        <th>Date</th>
+    </tr>
+
+    {% for i in prescription %}
+    <tr>
+        <td>{{ i.APPOINTMENTID.PATIENTID.name }}</td>
+        <td>{{ i.prescription }}</td>
+        <td>{{ i.date }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

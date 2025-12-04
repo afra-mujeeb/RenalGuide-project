@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+  <h2>Slot Management</h2>
+  <button class="btn" onclick="window.location='/AddSlot'" >Add new slot</button><br><br>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+      <tr>
+        <th>DATE</th>
+        <th>TIME</th>
+        
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for i in slot %}
+      
+       <td>{{i.date}}</td>
+       <td>{{i.time}}</td>
+       
+        
+        <td>
+          <a href="/EditSlot/{{i.id}}">Edit</a>
+          <a href="/DeleteSlot/{{i.id}}" onclick="return confirm('Are you sure you want to delete')">Delete</a>
+
+        </td>
+      </tr>
+      {% endfor %}
+     
+  </table>
+
+</body>
+</html>
+    

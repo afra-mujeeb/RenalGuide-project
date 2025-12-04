@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d6ffc1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .profile-container {
+            background: #ffffff;
+            width: 400px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .profile-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid #2e7d32;
+            object-fit: cover;
+        }
+
+        h2 {
+            margin-top: 15px;
+            font-size: 24px;
+        }
+
+        .details {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .details p {
+            font-size: 16px;
+            background: #f5f7f9;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .details span {
+            font-weight: bold;
+        }
+
+        .btn {
+            margin-top: 25px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #246429;
+        }
+    </style>
+</head>
+<body>
+ <form action="" method="post">
+    {% csrf_token %}
+    <div class="profile-container">
+        
+        <!-- Doctor Profile Image -->
+         
+        <img src="{{doctor.image.url}}" alt="Doctor Image">
+
+        <!-- Doctor Name -->
+        <h2><input type="text" value="{{doctor.name}}" name="name"></h2>
+       
+        <div class="details">
+            <p><span>Age:</span><input type="text" value="{{doctor.age}}" name="age"></p>
+            <p><span>Phonenumber:</span><input type="text" value="{{doctor.phonenumber}}" name="phonenumber"></p>
+            <p><span>Sex:</span><input type="text" value="{{doctor.sex}}" name="sex"></p>
+            <p><span>Email:</span><input type="text" value="{{doctor.email}}" name="email"></p>
+            <p><span>Qualification:</span><input type="text" value="{{doctor.qualification}}" name="qualification"></p>
+            <p><span>Experience:</span><input type="text" value="{{doctor.experience}}" name="experience"></p>
+        </div>
+
+        <button class="btn" type="submit">Edit Profile</button>
+
+    </div>
+</form>
+</body>
+</html>

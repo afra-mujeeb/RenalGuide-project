@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <h2>Staff Management</h2>
+  <a href="/AddStaff">Add Staff</a><br><br>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+      <tr>
+        
+        <th>SI.NO</th>
+        <th>STAFF NAME</th>
+        <th>PHONE NUMBER</th>
+        <th>SEX</th>
+        <th>E-MAIL</th>
+        <th>EXPERIENCE</th>
+        <th>QUALIFICATION</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+    <tbody>
+      {% for i in nurse %} 
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{i.name}}</td>
+        <td>{{i.phonenumber}}</td>
+        <td>{{i.sex}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.experience}}</td>
+        <td>{{i.qualification}}</td>
+        
+        
+        <td>
+          <a href="/EditStaff/{{i.id}}">Edit</a>
+          <a href="/DeleteStaff/{{i.LOGINID.id}}" onclick="return confirm('Are you sure you want to delete')">Delete</a>
+        </td>
+      {% endfor %}
+    </table>  
+</body>
+</html>

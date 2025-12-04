@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <select>
+            <option value="">patient name</option><br>
+            {% for i in caretaker %}
+            <option value="{{i.PATIENTID.CARETAKERID.id}}">{{i.PATIENTID.name}}</option>
+            {% endfor %}
+        </select><br>
+    <textarea name="prescription" placeholder="prescription"></textarea><br>
+    <input type="date" name="date"></textarea>
+    <input type="submit" value="Add">
+
+ </form>
+        
+</body>
+</html>
