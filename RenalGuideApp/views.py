@@ -58,10 +58,10 @@ class AddDoctor(View):
     def get(self, request):
         return render(request, 'administration/AddDoctor.html')
     def post(self, request):
-        c=DoctorTableForm(request.POST)
+        c=DoctorTableForm(request.POST, request.FILES)
+        print("------------------->", request.POST)
         if c.is_valid():
             Doctor=c.save(commit=False)
-          
             Doctor.LOGINID =LoginTable.objects.create(username=Doctor.email, password=request.POST['password'], usertype="Doctor")
             Doctor.save()
             return HttpResponse('''<script>alert("Added Succesfully");window.location='/AddandManageDoctors'</script>''')
@@ -243,14 +243,14 @@ class Addprescription(View):
         if a.is_valid():
             f=a.save(commit=False)
             f.APPOINTMENTID=AppointmentTable.objects.get(id=p_id)
-            f.DOCID=DoctorTable.objects.get(LOGINID__id = request.session['user_id'])
+            f.DOCID=DoctorTable.objects.get(LOGINID_id = request.session['user_id'])
             f.save()
 
             return HttpResponse('''<script>alert("Added Succesfully");window.location='/Viewprescription'</script>''')
 
 class Viewprescription(View):
     def get(self, request):
-        c=PrescriptionTable.objects.filter(DOCID__LOGINID__id = request.session['user_id'])
+        c=PrescriptionTable.objects.filter(APPOINTMENTID__DOCTORID__LOGINID__id = request.session['user_id'])
         return render(request, 'doctor/Viewprescription.html', {'prescription':c})
 
     
@@ -312,10 +312,10 @@ class UserReg_api(APIView):
         login_valid = login_serial.is_valid()
 
         if data_valid and login_valid:
-            login_profile = login_serial.save(userType='USER')
+            login_profile = login_serial.save(usertype='Caretaker')
 
             # Assign the login profile to the UserTable and save UserTable
-            user_serial.save(LOGIN=login_profile)
+            user_serial.save(LOGINID=login_profile)
 
             #Return the serialized user  data in the response
             return Response(user_serial.data, status=status.HTTP_201_CREATED)
@@ -357,7 +357,7 @@ class LoginPage_api(APIView):
         
 # /////////////////////////////////////// STAFF ////////////////////////////////////////
 
-class ViewPatientsAPI(APIView):
+class c(APIView):
     def get(self,request,id):
         d=PatientTable.objects.filter(PATIENT_id=id)
         serializer=PatientTableSerializer(d,many=True)
@@ -441,7 +441,39 @@ class ViewDoctorAppoinmentAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-    
+
+
+
+class AddPatient(APIView):
+    def get(self, request, id):
+        patient = PatientTable.objects.get(CARETAKERID__LOGINID_id=id)
+        patient_serial = PatientTableSerializer(patient, many=True)
+        return Response(patient_serial.data, status=status.HTTP_200_OK)
+
+    def post(self, request, id):
+        caretaker = CaretakerTable.objects.get(LOGINID_id=id)
+        patient_serial = PatientTableSerializer(data=request.data)
+
+        if patient_serial.is_valid():
+            patient_serial.save(CARETAKERID=caretaker)
+            return Response({'status': 'Patient added successfully'},
+                            status=status.HTTP_201_CREATED)
+        else:
+            return Response({'status': 'Failed to add patient',
+                            'errors': patient_serial.errors},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
+# class FeedbackView(APIView):
+#     def get(self, request, id):
+#         feedbacks = FeedbackTable.objects.filter(userid_loginid=id)
+#         feedback_serial = FeedbackSerializer(feedbacks, many=True)
+#         return Response(feedback_serial.data, status=status.HTTP_200_OK)
+
+    # def post(self, request, id):
+    #     user = UserTable.objects.get(loginid=id)
+        
+
 
     
 

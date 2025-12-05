@@ -96,7 +96,6 @@ class AppointmentTable(models.Model):
 class PrescriptionTable(models.Model):
     prescription=models.CharField(max_length=30,null=True,blank=True)
     date=models.DateField(null=True,blank=True)
-    DOCID = models.ForeignKey(DoctorTable, on_delete=models.CASCADE, null=True, blank=True)
     APPOINTMENTID=models.ForeignKey(AppointmentTable,on_delete=models.CASCADE, null=True,blank=True)
 
 
