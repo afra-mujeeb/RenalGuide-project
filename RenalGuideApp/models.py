@@ -46,14 +46,12 @@ class PatientTable(models.Model):
     CARETAKERID=models.ForeignKey(CaretakerTable,on_delete=models.CASCADE, null=True,blank=True)
 
 class SlotTable(models.Model):
-    
     date=models.DateField(null=True,blank=True)
     time=models.TimeField(null=True,blank=True)
     availability=models.CharField(max_length=30,null=True,blank=True)
 
-
 class SlotBookingTable(models.Model):
-    CaretakerTable=models.ForeignKey(CaretakerTable,on_delete=models.CASCADE, null=True,blank=True)
+    CARETAKERID=models.ForeignKey(CaretakerTable,on_delete=models.CASCADE, null=True,blank=True)
     SLOT=models.ForeignKey(SlotTable,on_delete=models.CASCADE, null=True,blank=True)
     status=models.CharField(max_length=30,null=True,blank=True)
     

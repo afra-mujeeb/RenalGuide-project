@@ -26,12 +26,21 @@ class NurseTableSerializer(ModelSerializer):
 class PatientTableSerializer(ModelSerializer):
     class Meta:
         model = PatientTable
-        fields=['name', 'age','sex'] 
+        fields=['name', 'age','sex', 'bloodgroup', 'diagnosis'] 
+class ViewPatientTableSerializer(ModelSerializer):
+    class Meta:
+        model = PatientTable
+        fields=['name', 'age','sex', 'bloodgroup', 'diagnosis','id'] 
 
 class SlotTableSerializer(ModelSerializer):
     class Meta:
         model = SlotTable
-        fields=['date','time']  
+        fields=['id','date','time', 'availability']  
+
+class SlotBookingSerializer(ModelSerializer):
+    class Meta:
+        model = SlotBookingTable
+        fields = '__all__'
 
 # class RequestTableForm(ModelForm):
 #     class Meta:

@@ -75,18 +75,20 @@ urlpatterns = [
     path('UserReg_api', UserReg_api.as_view(), name="UserReg_api" ),
     path('LoginPage_api', LoginPage_api.as_view(), name="LoginPage_api"),
     path('ViewPatientsParametersAPI', ViewPatientsParametersAPI.as_view(), name="ViewPatientsParametersAPI"),
-    path('ViewDialysisCountAPI', ViewDialysisCountAPI.as_view(), name="ViewDialysisCountAPI"),
-    path('ViewPatientAPI', ViewPatientAPI.as_view(), name="ViewPatientAPI"),
+    path('ViewDialysisCountAPI/<int:id>', ViewDialysisCountAPI.as_view(), name="ViewDialysisCountAPI"),
+    path('ViewPatientAPI/<int:id>', ViewPatientAPI.as_view(), name="ViewPatientAPI"),
     path('ViewNotificationAPI', ViewNotificationAPI.as_view(), name="ViewNotificationAPI"),
     path('ViewNotificationSlotBookingAPI', ViewNotificationSlotBookingAPI.as_view(), name="ViewNotificationSlotBookingAPI" ),
     path('ViewDialysisCountAPI', ViewDialysisCountAPI.as_view(), name="ViewDialysisCountAPI" ),
     path('ViewDoctorAPI', ViewDoctorAPI.as_view(), name="ViewDoctorAPI" ),
     path('ViewSlotAvailabilityAPI', ViewSlotAvailabilityAPI.as_view(), name="ViewSlotAvailabilityAPI"),
     path('ViewPrescriptionAPI', ViewPrescriptionAPI.as_view(), name="ViewPrescriptionAPI"),
-    path('ViewSlotBookingAPI', ViewSlotBookingAPI.as_view(), name="ViewSlotBookingAPI"),
+    path('ViewSlotBookingAPI/<int:id>', ViewSlotBookingAPI.as_view(), name="ViewSlotBookingAPI"),
     path('ViewDoctorAPI', ViewDoctorAPI.as_view(), name="ViewDoctorAPI"),
     path('ViewDoctorAppoinmentAPI', ViewDoctorAppoinmentAPI.as_view(), name="ViewDoctorAppoinmentAPI" ),
-    path('AddPatient', AddPatient.as_view(), name="AddPatient" ),
+    path('AddPatient/<int:id>', AddPatient.as_view(), name="AddPatient" ),
+    path('Deletepatient/<int:id>', Deletepatient.as_view(), name="Deletepatient" ),
+    
     
 
 

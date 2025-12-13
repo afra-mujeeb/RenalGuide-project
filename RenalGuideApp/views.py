@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
-from RenalGuideApp.serializer import AppointmentTableSerializer, CaretakerTableSerializer, CountTableSerializer, DoctorTableSerializer, LoginTableSerializer, NotificationTableSerializer, PatientTableSerializer, PrescriptionTableSerializer, SlotTableSerializer, SlotnotificationTableSerializer
+from RenalGuideApp.serializer import AppointmentTableSerializer, CaretakerTableSerializer, CountTableSerializer, DoctorTableSerializer, LoginTableSerializer, NotificationTableSerializer, PatientTableSerializer, PrescriptionTableSerializer, SlotBookingSerializer, SlotTableSerializer, SlotnotificationTableSerializer, ViewPatientTableSerializer
 
 from .forms import *
 
@@ -331,8 +331,8 @@ class LoginPage_api(APIView):
         response_dict = {}
 
         #get data from the request
-        username = request.data.get("Username")
-        password = request.data.get("Password")
+        username = request.data.get("username")
+        password = request.data.get("password")
 
         #validate input
         if not username or not password:
@@ -341,7 +341,7 @@ class LoginPage_api(APIView):
         
 
         #fetch the user from LoginTable
-        t_user = LoginTable.objects.filter(Username=username, Password=password).first()
+        t_user = LoginTable.objects.filter(username=username, password=password).first()
 
 
         if not t_user:
@@ -349,12 +349,22 @@ class LoginPage_api(APIView):
             return Response(response_dict,status.HTTP_401_UNAUTHORIZED)
         
         else:
-            response_dict["message"]="success"
-            response_dict['login_id']=t_user.id
-            response_dict["UserType"]=t_user.UserType
+            try:
+                obj = PatientTable.objects.get(CARETAKERID__LOGINID_id=t_user.id)
+                count_obj=CountTable.objects.get(PATIENTID__id=obj.id)
+                response_dict["message"]="success"
+                response_dict["count"]=count_obj.count
+                response_dict['login_id']=t_user.id
+                response_dict["UserType"]=t_user.usertype
+                print("------------------->", response_dict)
+                return Response(response_dict,status=status.HTTP_200_OK)
+            except:
+                response_dict["message"]="success"
+                response_dict['login_id']=t_user.id
+                response_dict["UserType"]=t_user.usertype
 
-            return Response(response_dict,status=status.HTTP_200_OK)
-        
+                return Response(response_dict,status=status.HTTP_200_OK)
+            
 # /////////////////////////////////////// STAFF ////////////////////////////////////////
 
 class c(APIView):
@@ -382,13 +392,21 @@ class ViewDialysisCountAPI(APIView):
 
 class ViewPatientAPI(APIView):
     def get(self,request,id):
-        d=PatientTable.objects.filter(PATIENT_id=id)
-        serializer=PatientTableSerializer(d,many=True)
+        print("------------>--------", id)
+
+        d=PatientTable.objects.filter(CARETAKERID__LOGINID_id=id)
+        print("------------------>", d)
+        serializer=ViewPatientTableSerializer(d, many=True)
+        print('------------->', serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
+        
+            
+
+
     
 class ViewNotificationAPI(APIView):
     def get(self,request,id):
-        d=NotificationTable.objects.filter(PATIENT_id=id)
+        d=NotificationTable.objects.filter(CARETAKERID__LOGINID_id=id)
         serializer=NotificationTableSerializer(d,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -411,8 +429,8 @@ class ViewDoctorAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ViewSlotAvailabilityAPI(APIView):
-    def get(self,request,id):
-        d=SlotTable.objects.filter(PATIENT_id=id)
+    def get(self,request):
+        d=SlotTable.objects.all()
         serializer=SlotTableSerializer(d,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -423,9 +441,12 @@ class ViewPrescriptionAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ViewSlotBookingAPI(APIView):
-    def get(self,request,id):
-        d=SlotBookingTable.objects.filter(PATIENT_id=id)
-        serializer=SlotTableSerializer(d,many=True)
+    def post(self,request,id):
+        print(request.data)
+        d=CaretakerTable.objects.get(LOGINID__id=id)
+        serializer=SlotBookingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(CARETAKERID=d, status = 'pending')
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ViewDoctorAPI(APIView):
@@ -445,24 +466,38 @@ class ViewDoctorAppoinmentAPI(APIView):
 
 
 class AddPatient(APIView):
+
     def get(self, request, id):
-        patient = PatientTable.objects.get(CARETAKERID__LOGINID_id=id)
-        patient_serial = PatientTableSerializer(patient, many=True)
+        patients = PatientTable.objects.filter(CARETAKERID__LOGINID_id=id)
+        patient_serial = PatientTableSerializer(patients, many=True)
         return Response(patient_serial.data, status=status.HTTP_200_OK)
 
     def post(self, request, id):
         caretaker = CaretakerTable.objects.get(LOGINID_id=id)
+
+        count = PatientTable.objects.filter(CARETAKERID=caretaker).count()
+        if count >= 1:
+            return Response(
+                {'message': 'Only one patient can be added'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         patient_serial = PatientTableSerializer(data=request.data)
 
         if patient_serial.is_valid():
-            patient_serial.save(CARETAKERID=caretaker)
-            return Response({'status': 'Patient added successfully'},
-                            status=status.HTTP_201_CREATED)
+            patient_serial.save(CARETAKERID=caretaker)  
+            return Response(
+                {'status': 'Patient added successfully'},
+                status=status.HTTP_201_CREATED
+            )
         else:
-            return Response({'status': 'Failed to add patient',
-                            'errors': patient_serial.errors},
-                            status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(
+                {
+                    'status': 'Failed to add patient',
+                    'errors': patient_serial.errors
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 # class FeedbackView(APIView):
 #     def get(self, request, id):
@@ -475,8 +510,11 @@ class AddPatient(APIView):
         
 
 
-    
-
+class Deletepatient(APIView):
+    def get(self,request,id):
+        c=PatientTable.objects.get(id=id)
+        c.delete()
+        return Response({'message':'deleted succesfully'}, status=200)
     
 
 
