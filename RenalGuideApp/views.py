@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
-from RenalGuideApp.serializer import AppointmentTableSerializer, CaretakerTableSerializer, CountTableSerializer, DoctorTableSerializer, LoginTableSerializer, NotificationTableSerializer, PatientTableSerializer, PrescriptionTableSerializer, SlotBookingSerializer, SlotTableSerializer, SlotnotificationTableSerializer, ViewPatientTableSerializer
+from RenalGuideApp.serializer import *
 
 from .forms import *
 
@@ -275,7 +275,24 @@ class ViewPatients(View):
     def get(self, request):
         c = AppointmentTable.objects.filter(DOCTORID__LOGINID__id = request.session['user_id'])
         return render(request, 'doctor/ViewPatients.html',{'patients':c}) 
-                   
+    
+class ViewPatientRecords(View):
+    def get(self, request):
+        c = AppointmentTable.objects.filter(DOCTORID__LOGINID__id = request.session['user_id'])
+        return render(request, 'doctor/ViewPatientRecords.html',{'patients':c}) 
+    
+class SearchRecord(View):
+    def post(self, request):
+        c = AppointmentTable.objects.filter(DOCTORID__LOGINID__id = request.session['user_id'])
+        Patient = request.POST['Patient']
+        care = PatientTable.objects.get(id=Patient)
+        print('===============', care)
+        d = care.CARETAKERID
+        print('------------------------',d)
+        PatientRecord = PatientRecordsTable.objects.filter(PATIENTID=d)
+        return render(request, 'doctor/ViewPatientRecords.html', {'records':PatientRecord, 'patients':c})
+
+
 class Appointmentsbooked(View):
     def get(self, request):
         c=AppointmentTable.objects.filter(DOCTORID__LOGINID__id = request.session['user_id'])
@@ -400,7 +417,17 @@ class ViewPatientAPI(APIView):
         print('------------->', serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
-            
+class ViewPatientRecordsAPI(APIView):
+    def get(self, request, id):
+        """
+        id → LOGINID of caretaker
+        """
+        records = PatientRecordsTable.objects.filter(
+            PATIENTID__CARETAKERID__LOGINID_id=id
+        )
+
+        serializer = PatientRecordsSerializer(records, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     
@@ -499,6 +526,43 @@ class AddPatient(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+class AddPatientRecordsAPI(APIView):
+    def post(self, request, id):
+        """
+        id → LOGINID of caretaker
+        """
+
+        try:
+            # Get caretaker's patient
+            patient = PatientTable.objects.get(
+                CARETAKERID__LOGINID_id=id
+            )
+        except PatientTable.DoesNotExist:
+            return Response(
+                {'message': 'Patient not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Get multiple images
+        images = request.FILES.getlist('record_image')
+
+        if not images:
+            return Response(
+                {'message': 'No images uploaded'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Save each image
+        for image in images:
+            PatientRecordsTable.objects.create(
+                PATIENTID=patient,
+                record_image=image
+            )
+
+        return Response(
+            {'message': 'Patient records added successfully'},
+            status=status.HTTP_201_CREATED
+        )
 # class FeedbackView(APIView):
 #     def get(self, request, id):
 #         feedbacks = FeedbackTable.objects.filter(userid_loginid=id)
@@ -518,8 +582,31 @@ class Deletepatient(APIView):
     
 
 
-
-       
+class ViewSlothistory(APIView):
+    def get(self,request,id):
+        c=SlotBookingTable.objects.filter(CARETAKERID__LOGINID__id=id)
+        serializer=SlothistorySerializer(c, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+     
+class ViewDoctor(APIView):
+    def get(self,request):
+        c=DoctorTable.objects.all()
+        serializer=DoctorTableSerializer(c, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class bookDoctor(APIView):
+    def post(self, request, id):
+        print('&&&&&&&&&&&&&&&&&&&&&&&&&&', request.data)
+        c = PatientTable.objects.get(CARETAKERID__LOGINID__id=id)
+        serializer = AppointmentTableSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(PATIENTID=c, status="pending")
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
               
 
+class BookingHistory(APIView):
+    def get(self, request, id):
+        c = AppointmentTable.objects.filter(PATIENTID__CARETAKERID__LOGINID__id = id)
+        serializer = AppointmentHistory(c, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

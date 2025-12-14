@@ -29,6 +29,12 @@ class PatientTableForm(ModelForm):
     class Meta:
         model = PatientTable
         fields=['name', 'age','sex'] 
+class PatientRecordsTableForm(ModelForm):
+    class Meta:
+        model = PatientRecordsTable
+        fields=['record'] 
+
+
 
 class SlotTableForm(ModelForm):
     class Meta:

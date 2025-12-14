@@ -66,9 +66,11 @@ urlpatterns = [
     path('ViewParameters', ViewParameters.as_view(), name="ViewParameters"),
     path('ViewParameters1', ViewParameters1.as_view(), name="ViewParameters1"),
     path('ViewPatients', ViewPatients.as_view(), name="ViewPatients"),
+    path('ViewPatientRecords',ViewPatientRecords.as_view(), name="ViewPatientRecords"),
     path('Appointmentsbooked', Appointmentsbooked.as_view(), name="Appointmentsbooked"),
     path('doctorhomepage', doctorhomepage.as_view(), name="doctorhomepage" ),
     path('Doctorprofile', Doctorprofile.as_view(), name="Doctorprofile" ),
+    path('searchrecord', SearchRecord.as_view(), name="searchrecord" ),
 
     #/////////////////////////// API ///////////////////////////////////
 
@@ -88,6 +90,12 @@ urlpatterns = [
     path('ViewDoctorAppoinmentAPI', ViewDoctorAppoinmentAPI.as_view(), name="ViewDoctorAppoinmentAPI" ),
     path('AddPatient/<int:id>', AddPatient.as_view(), name="AddPatient" ),
     path('Deletepatient/<int:id>', Deletepatient.as_view(), name="Deletepatient" ),
+    path('ViewPatientRecordsAPI/<int:id>', ViewPatientRecordsAPI.as_view(), name="ViewPatientRecordsAPI" ),
+    path('AddPatientRecordsAPI/<int:id>', AddPatientRecordsAPI.as_view(), name="AddPatientRecordsAPI" ),
+    path('Slothistory/<int:id>', ViewSlothistory.as_view()),
+    path('ViewDoctor', ViewDoctor.as_view()),
+    path('BookDoctor/<int:id>', bookDoctor.as_view()),
+    
     
     
 

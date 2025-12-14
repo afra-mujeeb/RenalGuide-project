@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from RenalGuideApp.models import *
 
@@ -14,7 +15,7 @@ class CaretakerTableSerializer(ModelSerializer):
 class DoctorTableSerializer(ModelSerializer):
     class Meta:
         model = DoctorTable
-        fields=['name','age','phonenumber','sex','email','image','qualification','experience']
+        fields=['id','name','age','phonenumber','sex','email','image','qualification','experience']
 class DoctorEditSerializer(ModelSerializer):
     class Meta:
         model = DoctorTable
@@ -32,6 +33,14 @@ class ViewPatientTableSerializer(ModelSerializer):
         model = PatientTable
         fields=['name', 'age','sex', 'bloodgroup', 'diagnosis','id'] 
 
+class PatientRecordsSerializer(ModelSerializer):
+    PATIENTID = ViewPatientTableSerializer(read_only=True)
+
+    class Meta:
+        model = PatientRecordsTable
+        fields = ['id','record','uploaded_date','PATIENTID']
+
+
 class SlotTableSerializer(ModelSerializer):
     class Meta:
         model = SlotTable
@@ -41,6 +50,15 @@ class SlotBookingSerializer(ModelSerializer):
     class Meta:
         model = SlotBookingTable
         fields = '__all__'
+ 
+
+class SlothistorySerializer(ModelSerializer):
+      date=serializers.DateField(source='SLOT.date')
+      time=serializers.TimeField(source='SLOT.time')
+      class Meta:
+        model = SlotBookingTable
+        fields=['CARETAKERID','SLOT','status','date','time']   
+
 
 # class RequestTableForm(ModelForm):
 #     class Meta:
@@ -75,7 +93,7 @@ class DietTableSerializer(ModelSerializer):
 class AppointmentTableSerializer(ModelSerializer):
     class Meta:
         model = AppointmentTable
-        fields=['date','time']
+        fields='__all__'
 class PreHDTableSerializer(ModelSerializer):
     class Meta:
         model = PreHDTable
@@ -84,3 +102,9 @@ class PostHDTableSerializer(ModelSerializer):
     class Meta:
         model = PostHDTable
         fields=['date','numberofHD','bloodpressure','temperature','weight','weightloss']        
+
+class AppointmentHistory(ModelSerializer):
+    doctorname = serializers.CharField(source='DOCTORID.name')
+    class Meta:
+        model = AppointmentTable
+        fields = ['date','time', 'bookingdate','doctorname' ]

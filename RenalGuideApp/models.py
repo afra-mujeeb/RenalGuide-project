@@ -45,6 +45,12 @@ class PatientTable(models.Model):
     diagnosis=models.CharField(max_length=30,null=True,blank=True)
     CARETAKERID=models.ForeignKey(CaretakerTable,on_delete=models.CASCADE, null=True,blank=True)
 
+class PatientRecordsTable(models.Model):
+    PATIENTID = models.ForeignKey(CaretakerTable,on_delete=models.CASCADE, null=True,blank=True)
+    record = models.ImageField(upload_to="patient_records/")
+    uploaded_date = models.DateTimeField(auto_now_add=True)
+
+
 class SlotTable(models.Model):
     date=models.DateField(null=True,blank=True)
     time=models.TimeField(null=True,blank=True)
