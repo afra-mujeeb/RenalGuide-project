@@ -3,22 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add Staff</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f5f0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center; /* horizontal center */
+            align-items: center;     /* vertical center */
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 30px 25px;
+            border: 2px solid #2E7D32;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #2E7D32;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        label {
+            margin-right: 15px;
+            color: #2E7D32;
+            font-weight: 500;
+        }
+
+        button[type="submit"] {
+            background-color: #2E7D32;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #256629;
+        }
+    </style>
 </head>
 <body>
+
     <form method="POST">
         {% csrf_token %}
-       
+        <input type="text" placeholder="Name" name="name">
+        <input type="text" placeholder="Phone number" name="phonenumber">
         
-        <input type="text" placeholder="Name" name="name"><br><br>
-        <input type="text" placeholder="Phone number" name="phonenumber"><br><br>
-        <input type="radio"  value="Male" name="sex">Male <br>
-        <input type="radio"  value="Female" name="sex">Female<br><br>
-        <input type="text" placeholder="E-mail" name="email" ><br><br>
-        <input type="password" placeholder="Password" name="password" ><br><br>
-        <input type="text" placeholder="Qualification" name="qualification"><br><br>
-        <input type="text" placeholder="Experience" name="experience"><br><br>
-        <button type="submit">submit</button>
-    </form>   
+        <label><input type="radio" value="Male" name="sex"> Male</label>
+        <label><input type="radio" value="Female" name="sex"> Female</label><br><br>
+        
+        <input type="text" placeholder="E-mail" name="email">
+        <input type="password" placeholder="Password" name="password">
+        <input type="text" placeholder="Qualification" name="qualification">
+        <input type="text" placeholder="Experience" name="experience">
+        
+        <button type="submit">Submit</button>
+    </form>
+
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Doctor Availability</title>
+    <title>Doctor Leave</title>
 
     <style>
         body {
@@ -26,13 +26,6 @@
             color: #2E7D32;
             margin-bottom: 8px;
             letter-spacing: 0.5px;
-        }
-
-        .doctor-name {
-            text-align: center;
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 25px;
         }
 
         table {
@@ -68,21 +61,41 @@
             background-color: #e8f5e9;
         }
 
-        .status-available {
+        /* Status colors */
+        .status-pending {
+            color: #ff9800;
+            font-weight: 600;
+        }
+
+        .status-accepted {
             color: #2E7D32;
             font-weight: 600;
         }
 
-        .status-unavailable {
+        .status-rejected {
             color: #c62828;
             font-weight: 600;
         }
 
-        .no-data {
-            text-align: center;
-            color: #999;
-            font-style: italic;
-            padding: 20px;
+        /* Buttons */
+        button {
+            background-color: #2E7D32;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin: 2px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1b5e20;
+        }
+
+        a {
+            text-decoration: none;
         }
 
         /* Responsive */
@@ -103,34 +116,40 @@
             <thead>
                 <tr>
                     <th>Doctor Name</th>
-                    <th>Leav  from</th>
-                    <th>Leave to</th>
+                    <th>Leave From</th>
+                    <th>Leave To</th>
                     <th>Reason</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
-        
+            </thead>
+            <tbody>
                 {% for i in availability %}
                 <tr>
                     <td>{{ i.DOCTOR.name }}</td>
                     <td>{{ i.leave_from }}</td>
                     <td>{{ i.leave_to }}</td>
-                    <td>{{i.reason}}</td>
-                    <td>{{i.Status}}</td>
+                    <td>{{ i.reason }}</td>
                     <td>
                         {% if i.Status == "pending" %}
-                        <a href="/acceptLeave/{{i.id}}"><button>Accept</button></a>
-                    <a href="/rejectLeave/{{i.id}}"><button>reject</button></a>
-                    {% elif i.Status == "rejected" %}
-                        <a href="/acceptLeave/{{i.id}}"><button>Accept</button></a>
+                            <span class="status-pending">Pending</span>
+                        {% elif i.Status == "accepted" %}
+                            <span class="status-accepted">Accepted</span>
                         {% else %}
-                    <a href="/rejectLeave/{{i.id}}"><button>reject</button></a>
-                    {% endif %}
-
-
-                   
+                            <span class="status-rejected">Rejected</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if i.Status == "pending" %}
+                            <a href="/acceptLeave/{{i.id}}"><button>Accept</button></a>
+                            <a href="/rejectLeave/{{i.id}}"><button>Reject</button></a>
+                        {% elif i.Status == "rejected" %}
+                            <a href="/acceptLeave/{{i.id}}"><button>Accept</button></a>
+                        {% else %}
+                            <a href="/rejectLeave/{{i.id}}"><button>Reject</button></a>
+                        {% endif %}
+                    </td>
                 </tr>
-            
                 {% endfor %}
             </tbody>
         </table>

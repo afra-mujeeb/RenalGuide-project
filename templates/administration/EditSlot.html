@@ -3,15 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit Slot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f5f0;
+            color: #2E7D32;
+            margin: 30px;
+        }
+
+        h2 {
+            color: #2E7D32;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 2px solid #2E7D32;
+            border-radius: 8px;
+            max-width: 400px;
+        }
+
+        input[type="date"],
+        input[type="time"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #2E7D32;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            background-color: #2E7D32;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #256629;
+        }
+    </style>
 </head>
 <body>
+
+    <h2>Edit Slot</h2>
     <form method="post">
         {% csrf_token %}
-        <input type="date" name="date" value="{{Slot.date|date:'Y-m-d'}}" placeholder="Date"><br><br>
-        <input type="time" name="time" value="{{ time }}" placeholder="Time"><br><br>
-        <button type="submit">submit</button>
-
+        <input type="date" name="date" value="{{ Slot.date|date:'Y-m-d' }}" placeholder="Date"><br>
+        <input type="time" name="time" value="{{ time }}" placeholder="Time"><br>
+        <button type="submit">Submit</button>
     </form>
+
 </body>
 </html>

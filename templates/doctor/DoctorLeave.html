@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Doctor Availability</title>
-
+    <title>Doctor Leave</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: #f4f6f9;
+            background-color: #E8F5E9; /* Light green background */
             margin: 0;
             padding: 30px;
         }
@@ -18,27 +17,25 @@
             background-color: #ffffff;
             padding: 25px 30px;
             border-radius: 12px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
         }
 
         h2 {
             text-align: center;
             color: #2E7D32;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .doctor-name {
-            text-align: center;
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #2E7D32;
         }
 
         thead {
@@ -46,56 +43,99 @@
             color: #ffffff;
         }
 
-        th {
-            padding: 14px;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-        }
-
-        td {
-            padding: 12px;
-            text-align: center;
-            font-size: 14px;
-            color: #333;
-        }
-
-        tbody tr {
-            border-bottom: 1px solid #e0e0e0;
+        tbody tr:nth-child(even) {
+            background-color: #C8E6C9; /* lighter green alternate rows */
         }
 
         tbody tr:hover {
-            background-color: #e8f5e9;
+            background-color: #A5D6A7;
         }
 
+        /* Buttons */
+        button, .add-button {
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Add Leave Button Highlight */
+        .add-button {
+            background-color: #43A047; /* Brighter green */
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* subtle shadow */
+        }
+
+        .add-button:hover {
+            background-color: #2E7D32; /* darker green on hover */
+            transform: scale(1.05); /* slight grow effect */
+        }
+
+        /* Delete Button */
+        .delete-button {
+            background-color: #C62828;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .delete-button:hover {
+            background-color: #8E0000;
+        }
+
+        /* Status Colors */
         .status-available {
             color: #2E7D32;
             font-weight: 600;
         }
 
         .status-unavailable {
-            color: #c62828;
+            color: #C62828;
             font-weight: 600;
         }
 
         .no-data {
             text-align: center;
-            color: #999;
             font-style: italic;
+            color: #555;
             padding: 20px;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             table, thead, tbody, th, td, tr {
-                font-size: 12px;
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 15px;
+            }
+            td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                text-align: left;
+                font-weight: bold;
             }
         }
     </style>
 </head>
-
 <body>
-
     <div class="container">
         <h2>Doctor Leave</h2>
 
@@ -103,29 +143,42 @@
             <thead>
                 <tr>
                     <th>Doctor Name</th>
-                    <th>Leav  from</th>
-                    <th>Leave to</th>
+                    <th>Leave From</th>
+                    <th>Leave To</th>
                     <th>Reason</th>
                     <th>Status</th>
-                    <th><button><a href="/InformLeave">add</a></button></th>
+                    <th>
+                        <a href="/InformLeave" class="add-button">Add Leave</a>
+                    </th>
                 </tr>
-        
+            </thead>
+            <tbody>
                 {% for i in availability %}
                 <tr>
-                    <td>{{ i.DOCTOR.name }}</td>
-                    <td>{{ i.leave_from }}</td>
-                    <td>{{ i.leave_to }}</td>
-                    <td>{{i.reason}}</td>
-                    <td>{{i.Status}}</td>
-                    <td>
-                      <a href="/DeleteLeave/{{i.id}}"><button>Delete</button></a></td>
-                   
+                    <td data-label="Doctor Name">{{ i.DOCTOR.name }}</td>
+                    <td data-label="Leave From">{{ i.leave_from }}</td>
+                    <td data-label="Leave To">{{ i.leave_to }}</td>
+                    <td data-label="Reason">{{ i.reason }}</td>
+                    <td data-label="Status"
+                        {% if i.Status|lower == 'available' %}
+                            class="status-available"
+                        {% else %}
+                            class="status-unavailable"
+                        {% endif %}
+                    >
+                        {{ i.Status }}
+                    </td>
+                    <td data-label="Actions">
+                        <a href="/DeleteLeave/{{i.id}}" class="delete-button">Delete</a>
+                    </td>
                 </tr>
-            
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="no-data">No leave records available.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
 </body>
 </html>

@@ -3,28 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>View Patients</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background-color: #2E7D32;
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #e8f5e9;
+        }
+
+        tbody tr:hover {
+            background-color: #c8e6c9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 15px;
+            }
+            td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                text-align: left;
+                font-weight: bold;
+            }
+        }
+    </style>
 </head>
 <body>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <tr>
-            <TH>SI NO</TH>
-            <th>Patient Name</th>
-            <th>Age</th>
-            <th>Sex</th>
-            <th>Caretaker Name</th>
-            <th>Caretaker Phone number</th>
-        </tr>
-         {% for i in patient %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.name}}</td>
-            <td>{{i.age}}</td>
-            <td>{{i.sex}}</td>
-            <td>{{i.CARETAKERID.name}}</td>
-            <td>{{i.CARETAKERID.phonenumber}}</td>
-        </tr>
-         {% endfor %}
-    </table>
+    <div class="container">
+        <h2>Patient List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>SI NO</th>
+                    <th>Patient Name</th>
+                    <th>Age</th>
+                    <th>Sex</th>
+                    <th>Caretaker Name</th>
+                    <th>Caretaker Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in patient %}
+                <tr>
+                    <td data-label="SI NO">{{ forloop.counter }}</td>
+                    <td data-label="Patient Name">{{ i.name }}</td>
+                    <td data-label="Age">{{ i.age }}</td>
+                    <td data-label="Sex">{{ i.sex }}</td>
+                    <td data-label="Caretaker Name">{{ i.CARETAKERID.name }}</td>
+                    <td data-label="Caretaker Phone Number">{{ i.CARETAKERID.phonenumber }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

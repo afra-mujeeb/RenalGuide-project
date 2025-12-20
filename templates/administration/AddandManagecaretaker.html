@@ -3,50 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Caretaker Management</title>
+
+    <style>
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:#f4f7f6;
+            margin:0;
+            padding:30px;
+        }
+
+        h2{
+            color:#2E7D32;
+            margin-bottom:20px;
+        }
+
+        .add-btn{
+            display:inline-block;
+            background:#2E7D32;
+            color:white;
+            padding:10px 16px;
+            border-radius:6px;
+            text-decoration:none;
+            font-size:14px;
+            margin-bottom:20px;
+        }
+
+        .add-btn:hover{
+            background:#256628;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            border-radius:10px;
+            overflow:hidden;
+        }
+
+        thead{
+            background:#2E7D32;
+            color:white;
+        }
+
+        th, td{
+            padding:12px 10px;
+            text-align:center;
+            font-size:14px;
+        }
+
+        tr:nth-child(even){
+            background:#f9f9f9;
+        }
+
+        tr:hover{
+            background:#eef6f0;
+        }
+
+        a{
+            text-decoration:none;
+            font-size:13px;
+        }
+
+        .action-link{
+            margin:0 5px;
+            color:#2E7D32;
+            font-weight:500;
+        }
+
+        .action-link:hover{
+            text-decoration:underline;
+        }
+
+        .btn{
+            padding:6px 10px;
+            border:none;
+            border-radius:5px;
+            font-size:12px;
+            cursor:pointer;
+            margin:2px;
+        }
+
+        .accept{
+            background:#2E7D32;
+            color:white;
+        }
+
+        .reject{
+            background:#c62828;
+            color:white;
+        }
+
+        .accept:hover{
+            background:#256628;
+        }
+
+        .reject:hover{
+            background:#b71c1c;
+        }
+
+        .status{
+            font-weight:600;
+            text-transform:capitalize;
+        }
+
+        .pending{ color:#f9a825; }
+        .approved{ color:#2E7D32; }
+        .rejected{ color:#c62828; }
+    </style>
 </head>
+
 <body>
-     <h2>Caretaker Management</h2>
-  <a href="/AddCaretaker">Add Caretaker</a><br><br>
-  <table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-        <tr>
-            <th>SI.NO</th>
-            <th>Caretaker Name</th>
-            <th>age</th>
-            <th>Sex</th>
-            <th>Phone number</th>
-            <th>email</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
+
+    <h2>Caretaker Management</h2>
+
+    <a href="/AddCaretaker" class="add-btn">+ Add Caretaker</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>SI.NO</th>
+                <th>Caretaker Name</th>
+                <th>Age</th>
+                <th>Sex</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Edit / Delete</th>
+                <th>Approval</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for i in caretaker %}
-        <tr>
-        <td>{{forloop.counter}}</td>
-            <td>{{i.name}}</td>
-            <td>{{i.age}}</td>
-            <td>{{i.sex}}</td>
-            <td>{{i.phonenumber}}</td>
-            <td>{{i.email}}</td>
-            <td>{{i.status }}</td>
-            <td>
-          <a href="/EditCaretaker/{{i.id}}">Edit</a>
-          <a href="/DeleteCaretaker/{{i.id}}" onclick="return confirm('Are you sure you want to delete')">Delete</a>
-        </td>
-            <td>
-                {% if i.status == "pending" %}
-           <a href="/acceptcaretaker/{{i.id}}"><button>accept</button></a>
-                <a href="/rejectcaretaker/{{i.id}}"><button>reject</button></a>
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.name }}</td>
+                <td>{{ i.age }}</td>
+                <td>{{ i.sex }}</td>
+                <td>{{ i.phonenumber }}</td>
+                <td>{{ i.email }}</td>
+                <td class="status {{ i.status }}">{{ i.status }}</td>
 
-            {% elif i.status == "rejected" %}
-                <a href="/acceptcaretaker/{{i.id}}"><button>accept</button></a>
+                <td>
+                    <a href="/EditCaretaker/{{i.id}}" class="action-link">Edit</a>
+                    |
+                    <a href="/DeleteCaretaker/{{i.id}}" class="action-link"
+                       onclick="return confirm('Are you sure you want to delete?')">
+                       Delete
+                    </a>
+                </td>
 
-            {% else %}
-                <a href="/rejectcaretaker/{{i.id}}"><button>reject</button></a>
-            {% endif %}
-        </td>
-        </tr>
+                <td>
+                    {% if i.status == "pending" %}
+                        <a href="/acceptcaretaker/{{i.id}}">
+                            <button class="btn accept">Accept</button>
+                        </a>
+                        <a href="/rejectcaretaker/{{i.id}}">
+                            <button class="btn reject">Reject</button>
+                        </a>
+
+                    {% elif i.status == "rejected" %}
+                        <a href="/acceptcaretaker/{{i.id}}">
+                            <button class="btn accept">Accept</button>
+                        </a>
+
+                    {% else %}
+                        <a href="/rejectcaretaker/{{i.id}}">
+                            <button class="btn reject">Reject</button>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
         {% endfor %}
+        </tbody>
     </table>
+
 </body>
 </html>

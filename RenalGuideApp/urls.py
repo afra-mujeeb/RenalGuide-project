@@ -65,6 +65,9 @@ urlpatterns = [
     path('acceptLeave/<int:id>', acceptLeave.as_view(), name='accepted'),
     path('rejectLeave/<int:id>', rejectLeave.as_view(), name='rejected'),
     path('DeleteLeave/<int:id>', DeleteLeave.as_view(), name='DeleteLeave'),
+    path('DeleteAvailability/<int:id>', DeleteAvailability.as_view(), name='DeleteAvailability'),
+
+
 
 
 

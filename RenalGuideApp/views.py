@@ -576,7 +576,13 @@ class DeleteLeave(View):
     def get(self, request,id):
         c=DoctorLeaveTable.objects.get(id=id)
         c.delete()
-        return HttpResponse('''<script>alert("Deleted Succesfully");window.location='/LeaveDoctor'</script>''')  
+        return HttpResponse('''<script>alert("Deleted Succesfully");window.location='/LeaveDoctor'</script>''')
+
+class DeleteAvailability(View):
+    def get(self, request,id):
+        c=DoctorAvailabilityTable.objects.get(id=id)
+        c.delete()
+        return HttpResponse('''<script>alert("Deleted Succesfully");window.location='/AvailabilityDoctor'</script>''')  
 
 
 class AddPatient(APIView):

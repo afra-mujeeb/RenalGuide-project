@@ -3,22 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add Prescription</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        select, textarea, input[type="date"], input[type="submit"] {
+            margin-bottom: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #2E7D32;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        input[type="submit"] {
+            background-color: #2E7D32;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #1b5e20;
+        }
+    </style>
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        <select>
-            <option value="">patient name</option><br>
-            {% for i in caretaker %}
-            <option value="{{i.PATIENTID.CARETAKERID.id}}">{{i.PATIENTID.name}}</option>
-            {% endfor %}
-        </select><br>
-    <textarea name="prescription" placeholder="prescription"></textarea><br>
-    <input type="date" name="date"></textarea>
-    <input type="submit" value="Add">
+    <div class="container">
+        <h2>Add Prescription</h2>
+        <form method="post">
+            {% csrf_token %}
+            <select name="patient" required>
+                <option value="">Select Patient</option>
+                {% for i in caretaker %}
+                <option value="{{ i.PATIENTID.CARETAKERID.id }}">{{ i.PATIENTID.name }}</option>
+                {% endfor %}
+            </select>
 
- </form>
-        
+            <textarea name="prescription" placeholder="Prescription details" required></textarea>
+
+            <input type="date" name="date" required>
+
+            <input type="submit" value="Add">
+        </form>
+    </div>
 </body>
 </html>

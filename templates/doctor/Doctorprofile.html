@@ -7,7 +7,7 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: #d6ffc1;
             margin: 0;
             padding: 0;
@@ -30,13 +30,20 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            border: 5px solid #2e7d32;
+            border: 5px solid #2E7D32;
             object-fit: cover;
         }
 
-        h2 {
+        h2 input {
             margin-top: 15px;
             font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            border: none;
+            border-bottom: 2px solid #2E7D32;
+            outline: none;
+            background: transparent;
         }
 
         .details {
@@ -47,56 +54,75 @@
         .details p {
             font-size: 16px;
             background: #f5f7f9;
-            padding: 12px;
+            padding: 10px 12px;
             border-radius: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .details span {
             font-weight: bold;
+            color: #2E7D32;
+        }
+
+        .details input {
+            width: 60%;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
         }
 
         .btn {
             margin-top: 25px;
-            background: #2e7d32;
+            background: #2E7D32;
             color: white;
             border: none;
             padding: 12px 40px;
             font-size: 16px;
             border-radius: 8px;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
 
         .btn:hover {
-            background: #246429;
+            background: #1B5E20;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .profile-container {
+                width: 90%;
+                padding: 20px;
+            }
+            .details input {
+                width: 55%;
+            }
         }
     </style>
 </head>
 <body>
- <form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="profile-container">
-        
         <!-- Doctor Profile Image -->
-         
-        <img src="{{doctor.image.url}}" alt="Doctor Image">
+        <img src="{{ doctor.image.url }}" alt="Doctor Image">
 
         <!-- Doctor Name -->
-        <h2><input type="text" value="{{doctor.name}}" name="name"></h2>
-       
+        <h2><input type="text" value="{{ doctor.name }}" name="name"></h2>
+
         <div class="details">
-            <p><span>Age:</span><input type="text" value="{{doctor.age}}" name="age"></p>
-            <p><span>Phonenumber:</span><input type="text" value="{{doctor.phonenumber}}" name="phonenumber"></p>
-            <p><span>Sex:</span><input type="text" value="{{doctor.sex}}" name="sex"></p>
-            <p><span>Email:</span><input type="text" value="{{doctor.email}}" name="email"></p>
-            <p><span>Qualification:</span><input type="text" value="{{doctor.qualification}}" name="qualification"></p>
-            <p><span>Experience:</span><input type="text" value="{{doctor.experience}}" name="experience"></p>
+            <p><span>Age:</span><input type="text" value="{{ doctor.age }}" name="age"></p>
+            <p><span>Phone:</span><input type="text" value="{{ doctor.phonenumber }}" name="phonenumber"></p>
+            <p><span>Sex:</span><input type="text" value="{{ doctor.sex }}" name="sex"></p>
+            <p><span>Email:</span><input type="text" value="{{ doctor.email }}" name="email"></p>
+            <p><span>Qualification:</span><input type="text" value="{{ doctor.qualification }}" name="qualification"></p>
+            <p><span>Experience:</span><input type="text" value="{{ doctor.experience }}" name="experience"></p>
         </div>
 
         <button class="btn" type="submit">Edit Profile</button>
-
     </div>
 </form>
 </body>

@@ -3,23 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add Doctor</title>
+
+    <style>
+        body{
+            margin:0;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:#f4f7f6;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-container{
+            width:420px;
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        h2{
+            text-align:center;
+            color:#2E7D32;
+            margin-bottom:25px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="file"]{
+            width:100%;
+            padding:12px;
+            margin-bottom:15px;
+            border-radius:6px;
+            border:1px solid #ccc;
+            font-size:14px;
+        }
+
+        input:focus{
+            outline:none;
+            border-color:#2E7D32;
+        }
+
+        .radio-group{
+            margin-bottom:15px;
+            font-size:14px;
+        }
+
+        .radio-group label{
+            margin-right:20px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            background:#2E7D32;
+            color:white;
+            border:none;
+            border-radius:6px;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#256628;
+        }
+    </style>
 </head>
+
 <body>
-   <form method="POST" enctype="multipart/form-data">
-       {% csrf_token %}
-       
-        <input type="file"  name="image"><br><br>
-        <input type="text" placeholder="Doctor Name" name="name"><br><br>
-        <input type="text" placeholder="Phone number" name="phonenumber"><br><br>
-        <input type="text" placeholder="Age" name="age"><br><br>
-        <input type="radio"  value="Male" name="sex">Male <br>
-        <input type="radio"  value="Female" name="sex">Female<br><br>
-        <input type="text" placeholder="E-mail" name="email" ><br><br>
-        <input type="password" placeholder="Password" name="password" ><br><br>
-        <input type="text" placeholder="Qualification" name="qualification"><br><br>
-        <input type="text" placeholder="Experience" name="experience"><br><br>
-        <button type="submit">submit</button>
-    </form>  
+
+    <div class="form-container">
+        <h2>Add Doctor</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input type="file" name="image" required>
+
+            <input type="text" placeholder="Doctor Name" name="name" required>
+            <input type="text" placeholder="Phone Number" name="phonenumber" required>
+            <input type="text" placeholder="Age" name="age" required>
+
+            <div class="radio-group">
+                <label>
+                    <input type="radio" value="Male" name="sex" required> Male
+                </label>
+                <label>
+                    <input type="radio" value="Female" name="sex"> Female
+                </label>
+            </div>
+
+            <input type="text" placeholder="E-mail" name="email" required>
+            <input type="password" placeholder="Password" name="password" required>
+            <input type="text" placeholder="Qualification" name="qualification" required>
+            <input type="text" placeholder="Experience" name="experience" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
 </body>
 </html>
