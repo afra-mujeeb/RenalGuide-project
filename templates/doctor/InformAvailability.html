@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inform Availability</title>
+</head>
+<body>
+
+<h2>Inform Availability</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Date:</label><br>
+  <input type="date" name="date"><br>
+
+    <label>Start Time:</label>
+    <input type="time" name="starttime" id="starttime"><br>
+    
+    <label>End Time:</label>
+    <input type="time" name="endtime" id="endtime"><br>
+   
+
+    <button type="submit">Submit Availability</button>
+</form>
+
+
+
+</body>
+</html>

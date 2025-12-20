@@ -27,6 +27,25 @@ class DoctorTable(models.Model):
     experience=models.IntegerField(null=True,blank=True)
     LOGINID=models.ForeignKey(LoginTable,on_delete=models.CASCADE, null=True,blank=True)
 
+class DoctorAvailabilityTable(models.Model):
+    doctor = models.ForeignKey(
+        DoctorTable,
+        on_delete=models.CASCADE
+    )
+    date = models.DateField()
+    starttime = models.TimeField()
+    endtime = models.TimeField()
+    status = models.CharField(
+        max_length=20,
+        default='Available'
+    )
+
+class DoctorLeaveTable(models.Model):
+    DOCTOR = models.ForeignKey(DoctorTable, on_delete=models.CASCADE)
+    leave_from = models.DateField()
+    leave_to = models.DateField()
+    reason = models.CharField(max_length=200,null=True,blank=True)
+    Status=models.CharField(max_length=100,null=True,blank=True)
 class NurseTable(models.Model):
     name=models.CharField(max_length=30,null=True,blank=True)
     age=models.IntegerField(null=True,blank=True)

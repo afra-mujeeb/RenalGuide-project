@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Leave</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f6f5;
+        }
+        .container{
+            width:500px;
+            margin:40px auto;
+            background:white;
+            padding:25px;
+            border-radius:8px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+        h2{
+            text-align:center;
+            color:#2E7D32;
+        }
+        label{
+            font-weight:bold;
+            display:block;
+            margin-top:12px;
+        }
+        input, select, textarea{
+            width:100%;
+            padding:8px;
+            margin-top:5px;
+        }
+        button{
+            width:100%;
+            margin-top:20px;
+            padding:10px;
+            background:#2E7D32;
+            color:white;
+            border:none;
+            font-size:16px;
+            cursor:pointer;
+        }
+        button:hover{
+            background:#256428;
+        }
+        .section{
+            margin-top:25px;
+            border-top:1px solid #ccc;
+            padding-top:15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Leave Form</h2>
+
+    <!-- AVAILABILITY FORM -->
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="section">
+            <h3 style="color:#2E7D32;">Doctor Availability</h3>
+
+            <label>leave_from</label>
+            <input type="date" name="leave_from">
+            <label>leave_to</label>
+            <input type="date" name="leave_to">
+            <label>reason</label>
+            <input type="text" name="reason">
+           
+        </div>
+
+    
+
+        <button type="submit">Submit to Admin</button>
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -38,6 +38,7 @@ urlpatterns = [
     path('acceptAppointment/<int:id>', acceptAppointment.as_view(), name='accepted'),
     path('rejectAppoinment/<int:id>', rejectAppoinment.as_view(), name='rejected'),
     path('AddDoctor', AddDoctor.as_view(), name="AddDoctor"),
+    # path('DoctorInformAdmin/', DoctorInformAdmin.as_view(), name='DoctorInformAdmin'),
     path('AddSlot', AddSlot.as_view(), name="AddSlot"),
     path('AddStaff', AddStaff.as_view(), name="AddStaff"),
     path('EditDoctor/<int:d_id>', EditDoctor.as_view(), name="EditDoctor"),
@@ -57,6 +58,16 @@ urlpatterns = [
     path('acceptcaretaker/<int:id>', acceptcaretaker.as_view(), name='accepted'),
     path('rejectcaretaker/<int:id>', rejectcaretaker.as_view(), name='rejected'),
     path('adminhomepage', adminhome.as_view(), name="adminhomepage"),
+    path('DoctorLeave/', DoctorLeave.as_view(), name="DoctorLeave"),
+    path('LeaveDoctor/', LeaveDoctor.as_view(), name="LeaveDoctor"),
+    path('DoctorAvailability/', DoctorAvailability.as_view(), name="DoctorAvailability"),
+    path('AvailabilityDoctor/', AvailabilityDoctor.as_view(), name="AvailabilityDoctor"),
+    path('acceptLeave/<int:id>', acceptLeave.as_view(), name='accepted'),
+    path('rejectLeave/<int:id>', rejectLeave.as_view(), name='rejected'),
+    path('DeleteLeave/<int:id>', DeleteLeave.as_view(), name='DeleteLeave'),
+
+
+
 
 
     # ////////////////////////////// D ////////////////////////////////////////////
@@ -71,6 +82,8 @@ urlpatterns = [
     path('doctorhomepage', doctorhomepage.as_view(), name="doctorhomepage" ),
     path('Doctorprofile', Doctorprofile.as_view(), name="Doctorprofile" ),
     path('searchrecord', SearchRecord.as_view(), name="searchrecord" ),
+    path('InformLeave', InformLeave.as_view(), name="InformLeave" ),
+    path('InformAvailability', InformAvailability.as_view(), name="InformAvailabilityDoctorLeave" ),
 
     #/////////////////////////// API ///////////////////////////////////
 

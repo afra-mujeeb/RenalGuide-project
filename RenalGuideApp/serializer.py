@@ -20,6 +20,14 @@ class DoctorEditSerializer(ModelSerializer):
     class Meta:
         model = DoctorTable
         fields=['name','age','phonenumber','sex','email','qualification','experience']
+class DoctorAvailabilitySerializer(ModelSerializer):
+    class Meta:
+        model = DoctorTable
+        fields=['date','starttime','endtime','status']
+class DoctorLeaveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorLeaveTable
+        fields = ['DOCTOR','leave_from','leave_to','reason']
 class NurseTableSerializer(ModelSerializer):
     class Meta:
         model = NurseTable

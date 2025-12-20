@@ -21,6 +21,16 @@ class DoctorEditForm(ModelForm):
     class Meta:
         model = DoctorTable
         fields=['name','age','phonenumber','sex','email','qualification','experience']
+
+class DoctorAvailabilityForm(ModelForm):
+    class Meta:
+        model = DoctorAvailabilityTable
+        fields=['date','starttime','endtime']
+
+class DoctorLeaveForm(ModelForm):
+    class Meta:
+        model = DoctorLeaveTable
+        fields = ['leave_from','leave_to','reason','Status']
 class NurseTableForm(ModelForm):
     class Meta:
         model = NurseTable

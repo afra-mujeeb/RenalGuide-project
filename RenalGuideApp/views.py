@@ -1,5 +1,6 @@
+from pyexpat.errors import messages
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 
 from RenalGuideApp.serializer import *
@@ -180,6 +181,56 @@ class rejectAppoinment(View):
         c.status = "rejected"
         c.save()
         return redirect('/doctorappointment') 
+    
+
+class DoctorLeave(View):
+    def get(self,request):
+        c=DoctorLeaveTable.objects.all()
+        return render(request,'administration/DoctorLeave.html',{'availability':c})
+    # def get(self, request,id):
+    #     # get doctor
+    #     doctor = get_object_or_404(DoctorTable, id=id)
+
+    #     # get availability of that doctor
+    #     availability = DoctorAvailabilityTable.objects.filter(
+    #         doctor=doctor
+    #     ).order_by('date', 'start_time')
+
+    #     context = {
+    #         'doctor': doctor,
+    #         'availability': availability
+    #     }
+
+    #     return render(
+    #         request,
+    #         'administration/DoctorAvailability.html',
+    #         context
+    #     )
+
+class DoctorAvailability(View):
+    def get(self,request):
+        c=DoctorAvailabilityTable.objects.all()
+        return render(request,'administration/DoctorAvailability.html',{'availability':c})
+
+class AvailabilityDoctor(View):
+    def get(self,request):
+        c=DoctorAvailabilityTable.objects.filter(doctor__LOGINID__id = request.session['user_id'])
+        return render(request,'doctor/DoctorAvailability.html',{'availability':c})
+
+class acceptLeave(View):
+    def get(self, request, id):
+        c = DoctorLeaveTable.objects.get(id=id)
+        c.Status = "Accepted"
+        c.save()
+        return redirect('/DoctorLeave')
+    
+class rejectLeave(View):
+    def get(self, request, id):
+        c = DoctorLeaveTable.objects.get(id=id)
+        c.Status = "rejected"
+        c.save()
+        return redirect('/DoctorLeave')
+
 
 class AddandManagecaretaker(View):
     def get(self, request):
@@ -301,6 +352,32 @@ class Appointmentsbooked(View):
 class doctorhomepage(View):
     def get(self, request):
         return render(request, 'doctor/doctorhomepage.html')
+    
+class InformLeave(View):
+    def get(self, request):
+        return render(request, 'doctor/InformLeave.html')
+    def post(self,request):
+        d = DoctorTable.objects.get(LOGINID__id = request.session['user_id'])
+        c=DoctorLeaveForm(request.POST)
+        if c.is_valid():
+            reg = c.save(commit=False)
+            reg.DOCTOR = d
+            reg.Status = 'pending'
+            reg.save()
+        return redirect('/LeaveDoctor')
+    
+class InformAvailability(View):
+    def get(self, request):
+        return render(request, 'doctor/InformAvailability.html')
+    def post(self,request):
+        d =DoctorTable.objects.get(LOGINID__id = request.session['user_id'])
+        c=DoctorAvailabilityForm(request.POST)
+        if c.is_valid():
+            reg = c.save(commit=False)
+            reg.doctor = d
+            reg.save()
+        return redirect('/AvailabilityDoctor')
+
     
 class Doctorprofile(View):
     def get(self, request):
@@ -490,6 +567,16 @@ class ViewDoctorAppoinmentAPI(APIView):
 
 
 
+class LeaveDoctor(View):
+    def get(self,request):
+        c=DoctorLeaveTable.objects.filter(DOCTOR__LOGINID__id = request.session['user_id'])
+        return render(request,'doctor/DoctorLeave.html',{'availability':c})
+    
+class DeleteLeave(View):
+    def get(self, request,id):
+        c=DoctorLeaveTable.objects.get(id=id)
+        c.delete()
+        return HttpResponse('''<script>alert("Deleted Succesfully");window.location='/LeaveDoctor'</script>''')  
 
 
 class AddPatient(APIView):

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Availability</title>
+</head>
+<body>
+
+<h2>Doctor Availability</h2>
+<p>Doctor: {{ doctor.name }}</p>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Status</th>
+        <th><a href="/InformAvailability"><button>add</button></a></th>
+    </tr>
+
+    {% for i in availability %}
+    <tr>
+        <td>{{ i.date }}</td>
+        <td>{{ i.starttime }}</td>
+        <td>{{ i.endtime }}</td>
+        <td>{{ i.status }}</td>
+        <td><a href="">delete</a></td>
+    </tr>
+   
+    {% endfor %}
+</table>
+
+</body>
+</html>

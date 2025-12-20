@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Availability</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2E7D32;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .doctor-name {
+            text-align: center;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background-color: #2E7D32;
+            color: #ffffff;
+        }
+
+        th {
+            padding: 14px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr:hover {
+            background-color: #e8f5e9;
+        }
+
+        .status-available {
+            color: #2E7D32;
+            font-weight: 600;
+        }
+
+        .status-unavailable {
+            color: #c62828;
+            font-weight: 600;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Doctor Leave</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Doctor Name</th>
+                    <th>Leav  from</th>
+                    <th>Leave to</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+        
+                {% for i in availability %}
+                <tr>
+                    <td>{{ i.DOCTOR.name }}</td>
+                    <td>{{ i.leave_from }}</td>
+                    <td>{{ i.leave_to }}</td>
+                    <td>{{i.reason}}</td>
+                    <td>{{i.Status}}</td>
+                    <td>
+                        {% if i.Status == "pending" %}
+                        <a href="/acceptLeave/{{i.id}}"><button>Accept</button></a>
+                    <a href="/rejectLeave/{{i.id}}"><button>reject</button></a>
+                    {% elif i.Status == "rejected" %}
+                        <a href="/acceptLeave/{{i.id}}"><button>Accept</button></a>
+                        {% else %}
+                    <a href="/rejectLeave/{{i.id}}"><button>reject</button></a>
+                    {% endif %}
+
+
+                   
+                </tr>
+            
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
