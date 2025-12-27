@@ -39,10 +39,10 @@ class PatientTableForm(ModelForm):
     class Meta:
         model = PatientTable
         fields=['name', 'age','sex'] 
-class PatientRecordsTableForm(ModelForm):
-    class Meta:
-        model = PatientRecordsTable
-        fields=['record'] 
+# class PatientRecordsTableForm(ModelForm):
+#     class Meta:
+#         model = PatientRecordsTable
+#         fields=['id','record','PATIENTID','DOCTORID','Dateofconsultation','Description']
 
 
 
@@ -85,15 +85,4 @@ class AppointmentTableForm(ModelForm):
     class Meta:
         model = AppointmentTable
         fields=['date','time']
-class PreHDTableForm(ModelForm):
-    class Meta:
-        model = PreHDTable
-        fields=['date','numberofHD','bloodpressure','temperature','weight','weightgain']
-class PostHDTableForm(ModelForm):
-    class Meta:
-        model = PostHDTable
-        fields=['date','numberofHD','bloodpressure','temperature','weight','weightloss']        
 
-                                                        
-
-                                 

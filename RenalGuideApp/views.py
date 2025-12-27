@@ -74,7 +74,7 @@ class AddStaff(View):
         if c.is_valid():
             Nurse=c.save(commit=False)
           
-            Nurse.LOGINID =LoginTable.objects.create(username=Nurse.email, password=Nurse, usertype="Nurse")
+            Nurse.LOGINID =LoginTable.objects.create(username=Nurse.email, password=request.POST['password'], usertype="Nurse")
             Nurse.save()
             return HttpResponse('''<script>alert("Added Succesfully");window.location='/AddandManagestaff'</script>''')
     
@@ -703,3 +703,208 @@ class BookingHistory(APIView):
         c = AppointmentTable.objects.filter(PATIENTID__CARETAKERID__LOGINID__id = id)
         serializer = AppointmentHistory(c, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class AddPatientRecordsAPI(APIView):
+
+    def post(self,request,id):
+        print(request.data)
+        c = CaretakerTable.objects.get(LOGINID__id = id)
+        d = PatientRecordsSerializer(data=request.data)
+        if d.is_valid():
+            d.save(PATIENTID=c)
+            return Response(d.data, status=status.HTTP_200_OK)
+    def get(self, request, id):
+        c = PatientRecordsTable.objects.filter(PATIENTID__LOGINID__id = id)
+        ser = PatientRecordsSerializer(c, many=True)
+        return Response(ser.data, status=status.HTTP_200_OK)
+    
+class DeleteRecord(APIView):
+    def delete(self, request, record_id):
+        try:
+            record = PatientRecordsTable.objects.get(id=record_id)
+            record.delete()
+            return Response({'message': 'Record deleted succesfully'}, status=status.HTTP_200_OK)
+        except PatientRecordsTable.DoesNotExist:
+            return Response({'message': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+class CaretakerProfile(APIView):
+    def get(self, request,id):      
+        c=CaretakerTable.objects.get(LOGINID__id = id)
+        serializer = CaretakerSerializer(c)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(self, request, id):
+        c = CaretakerTable.objects.get(LOGINID__id = id)
+        serializer = CaretakerSerializer(c, data=request.data) 
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class ViewCountAPI(APIView):
+    def get(self, request,id):      
+        c=CountTable.objects.filter(PATIENTID__CARETAKERID__LOGINID__id = id)
+        serializer = CountSerializer(c)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+##############################################NURSE####################################################
+
+
+from django.db.models import Sum
+
+
+class ViewAllPatient(APIView):
+    def get(self, request):
+        patients = PatientTable.objects.all()
+
+        total_patients = patients.count()
+        total_dialysis = CountTable.object.aggregate(
+            total=sum('count')
+        )['total'] or 0
+
+        serializer = PatientTableCountSerializer(patients, many=True)
+
+        return Response({ 
+            "patient_count": total_patients,
+            "total_dialysis_count": total_dialysis,
+            "patients": serializer.data  
+        }, status=status.HTTP_200_OK)
+
+class AddCountAPI(APIView):
+    def post(self, request,id):      
+        patient = get_object_or_404(PatientTable, id=id)
+
+        add_value = request.data.get('count')
+
+        if add_value is None:
+            return Response(
+                {"error": "count is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            ) 
+
+        count_obj, created = CountTable.objects.get_or_create(
+            PATIENTID=patient,
+            defaults={'count': 0} 
+        ) 
+
+        count_obj.count += int(add_value)
+        count_obj.save()
+
+        serializer = CountSerializer(count_obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+class ViewAllPatient(APIView):
+    def get(self, request):
+        patients = PatientTable.objects.all()
+
+        total_patients = patients.count()
+        total_dialysis = CountTable.objects.aggregate(
+            total=Sum('count')
+        )['total'] or 0
+
+        serializer = PatientTableCountSerializer(patients, many=True)
+
+        return Response({
+            "patient_count": total_patients,
+            "total_dialysis_count": total_dialysis,
+            "patients": serializer.data
+        }, status=status.HTTP_200_OK)
+    
+from django.shortcuts import get_object_or_404
+
+class AddCountAPI(APIView):
+
+    def get(self, request, id):
+        patient = get_object_or_404(PatientTable, id=id)
+
+        count_obj, created = CountTable.objects.get_or_create(
+            PATIENTID=patient,
+            defaults={"count": 0}
+        )
+
+        serializer = CountSerializer(count_obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, id):
+        patient = get_object_or_404(PatientTable, id=id)
+
+        add_value = request.data.get("count")
+
+        if add_value is None:
+            return Response(
+                {"error": "count is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            add_value = int(add_value)
+        except ValueError:
+            return Response(
+                {"error": "count must be an integer"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        count_obj, created = CountTable.objects.get_or_create(
+            PATIENTID=patient,
+            defaults={"count": 0}
+        )
+
+        count_obj.count += add_value
+        count_obj.save()
+
+        serializer = CountSerializer(count_obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class PrePostHDCombinedAPI(APIView):
+
+    def post(self, request, patient_id):
+        patient = get_object_or_404(PatientTable, id=patient_id)
+
+        # COMMON DATA
+        date = request.data.get("date")
+        numberofHD = request.data.get("numberofHD")
+
+        # ===== PRE HD =====
+        prehd = PreHDTable.objects.create(
+            PATIENTID=patient,
+            date=date,
+            numberofHD=numberofHD,
+            bloodpressure=request.data.get("pre_bp"),
+            temperature=request.data.get("pre_temp"),
+            weight=request.data.get("pre_weight"),
+            weightgain=request.data.get("pre_weightgain"),
+        )
+
+        # ===== POST HD =====
+        posthd = PostHDTable.objects.create(
+            PATIENTID=patient,
+            date=date,
+            numberofHD=numberofHD,
+            bloodpressure=request.data.get("post_bp"),
+            # temperature=request.data.get("post_temp"),
+            weight=request.data.get("post_weight"),
+            weightloss=request.data.get("post_weightloss"),
+            # nextappointment=request.data.get("nextappointment"),
+        )
+
+        return Response({
+            "message": "Pre HD & Post HD saved successfully",
+            "prehd_id": prehd.id,
+            "posthd_id": posthd.id
+        }, status=status.HTTP_201_CREATED)
+
+
+class ViewPrePostHD(APIView):
+
+    def get(self, request, patient_id):
+        prehd = PreHDTable.objects.filter(PATIENTID__id=patient_id)
+        posthd = PostHDTable.objects.filter(PATIENTID__id=patient_id)
+
+        pre_serializer = PreHDTableSerializer(prehd, many=True)
+        post_serializer = PostHDTableSerializer(posthd, many=True)
+        print('===========================',pre_serializer.data)
+        print('===========================',post_serializer.data)
+        return Response({
+            "pre_hd": pre_serializer.data,
+            "post_hd": post_serializer.data
+        }, status=status.HTTP_200_OK)

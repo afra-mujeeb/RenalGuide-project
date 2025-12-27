@@ -111,7 +111,14 @@ urlpatterns = [
     path('Slothistory/<int:id>', ViewSlothistory.as_view()),
     path('ViewDoctor', ViewDoctor.as_view()),
     path('BookDoctor/<int:id>', bookDoctor.as_view()),
-    
+    path('addrecord/<int:id>', AddPatientRecordsAPI.as_view(), name="addrecord" ),
+    path('deleterecord/<int:record_id>', DeleteRecord.as_view(), name="deleterecord" ),
+    path('count/<int:id>', ViewCountAPI.as_view(), name='count'),
+    path('CaretakerProfile/<int:id>', CaretakerProfile.as_view(), name='CaretakerProfile'),
+    path('ViewAllPatient', ViewAllPatient.as_view(), name='ViewAllPatients'),
+    path('addcount/<int:id>', AddCountAPI.as_view()),
+    path('hd/<int:patient_id>', PrePostHDCombinedAPI.as_view(),),
+    path('viewhd/<int:patient_id>', ViewPrePostHD.as_view(),),
     
     
 

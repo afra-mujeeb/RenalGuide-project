@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
+from django.db.models import Sum
 
 from RenalGuideApp.models import *
 
@@ -42,11 +43,10 @@ class ViewPatientTableSerializer(ModelSerializer):
         fields=['name', 'age','sex', 'bloodgroup', 'diagnosis','id'] 
 
 class PatientRecordsSerializer(ModelSerializer):
-    PATIENTID = ViewPatientTableSerializer(read_only=True)
 
     class Meta:
         model = PatientRecordsTable
-        fields = ['id','record','uploaded_date','PATIENTID']
+        fields = '__all__'
 
 
 class SlotTableSerializer(ModelSerializer):
@@ -116,3 +116,56 @@ class AppointmentHistory(ModelSerializer):
     class Meta:
         model = AppointmentTable
         fields = ['date','time', 'bookingdate','doctorname' ]
+
+
+class PatientTableCountSerializer(serializers.ModelSerializer):
+    dialysis_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PatientTable
+        fields = '__all__'
+
+    def get_dialysis_count(self, obj):
+        total = CountTable.objects.filter(
+            PATIENTID=obj
+        ).aggregate(total=sum('count'))['total']
+        return total or 0
+    
+class CaretakerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CaretakerTable
+        fields = '__all__'
+
+class PatientTableCountSerializer(serializers.ModelSerializer):
+    dialysis_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PatientTable
+        fields = '__all__'
+
+    def get_dialysis_count(self, obj):
+        total = CountTable.objects.filter(
+            PATIENTID=obj
+        ).aggregate(total=Sum('count'))['total']
+        return total or 0
+    
+class CountSerializer(ModelSerializer):
+    class Meta:
+        model = CountTable
+        fields = '__all__'
+
+class PatientSerializer(ModelSerializer):
+    class Meta:
+        model = PatientTable
+        fields = "__all__"
+
+class PreHDTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PreHDTable
+        fields = "__all__"
+
+
+class PostHDTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostHDTable
+        fields = "__all__"	

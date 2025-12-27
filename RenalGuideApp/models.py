@@ -66,6 +66,9 @@ class PatientTable(models.Model):
 
 class PatientRecordsTable(models.Model):
     PATIENTID = models.ForeignKey(CaretakerTable,on_delete=models.CASCADE, null=True,blank=True)
+    DoctorName=models.CharField(max_length=30,null=True,blank=True)
+    Dateofconsultation=models.DateField(null=True,blank=True)
+    Description=models.TextField(null=True,blank=True)
     record = models.ImageField(upload_to="patient_records/")
     uploaded_date = models.DateTimeField(auto_now_add=True)
 
@@ -136,10 +139,8 @@ class PostHDTable(models.Model):
     date=models.DateField(null=True,blank=True)
     numberofHD=models.IntegerField(null=True,blank=True)
     bloodpressure=models.CharField(null=True,blank=True)
-    temperature=models.CharField(null=True,blank=True)
     weight=models.FloatField(null=True,blank=True)
     weightloss=models.FloatField(null=True,blank=True)
-    nextappointment=models.DateField(null=True,blank=True)  
 
     
 
