@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,6 +52,110 @@
 
         a {
             color: #2E7D32;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Staff Management</h2>
+    <a class="add-staff" href="/AddStaff">Add Staff</a><br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>SI.NO</th>
+                <th>STAFF NAME</th>
+                <th>PHONE NUMBER</th>
+                <th>SEX</th>
+                <th>E-MAIL</th>
+                <th>EXPERIENCE</th>
+                <th>QUALIFICATION</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in nurse %} 
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.name }}</td>
+                <td>{{ i.phonenumber }}</td>
+                <td>{{ i.sex }}</td>
+                <td>{{ i.email }}</td>
+                <td>{{ i.experience }}</td>
+                <td>{{ i.qualification }}</td>
+                <td>
+                    <a href="/EditStaff/{{ i.id }}">Edit</a>
+                    <a href="/DeleteStaff/{{ i.LOGINID.id }}" onclick="return confirm('Are you sure you want to delete')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f9fc;
+            color: #0c0c0c;
+            margin: 30px;
+        }
+
+        h2 {
+            color: #050606;
+        }
+
+        a.add-staff {
+            background-color: #A4C8E1;
+            color: rgb(12, 12, 12);
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a.add-staff:hover {
+            background-color: #8bb4d8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #A4C8E1;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #A4C8E1;
+            color: white;
+        }
+
+        td {
+            color: black; /* Table content in black */
+        }
+
+        a {
+            color: #A4C8E1;
             text-decoration: none;
             margin-right: 10px;
         }

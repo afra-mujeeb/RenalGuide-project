@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -74,6 +74,148 @@
 
         .edit{
             color:#2E7D32;
+            font-weight:600;
+        }
+
+        .delete{
+            color:#c62828;
+            font-weight:600;
+        }
+
+        .edit:hover,
+        .delete:hover{
+            text-decoration:underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Doctor Management</h2>
+
+    <a href="/AddDoctor" class="add-btn">+ Add Doctor</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>SI.NO</th>
+                <th>Image</th>
+                <th>Doctor Name</th>
+                <th>Phone Number</th>
+                <th>Sex</th>
+                <th>Email</th>
+                <th>Experience</th>
+                <th>Qualification</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for i in doctor %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <img src="{{ i.image.url }}" alt="Doctor Image" height="60" width="60">
+                </td>
+                <td>{{ i.name }}</td>
+                <td>{{ i.phonenumber }}</td>
+                <td>{{ i.sex }}</td>
+                <td>{{ i.email }}</td>
+                <td>{{ i.experience }}</td>
+                <td>{{ i.qualification }}</td>
+                <td>
+                    <a href="/EditDoctor/{{i.id}}" class="edit">Edit</a> |
+                    <a href="/DeleteDoctor/{{i.LOGINID.id}}"
+                       class="delete"
+                       onclick="return confirm('Are you sure you want to delete?')">
+                       Delete
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Management</title>
+
+    <style>
+        body{
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:#f4f7f6;
+            margin:0;
+            padding:30px;
+        }
+
+        h2{
+            color:#0b0b0b;
+            margin-bottom:20px;
+        }
+
+        .add-btn{
+            display:inline-block;
+            background:#A4C8E1;
+            color:rgb(14, 13, 13);
+            padding:10px 16px;
+            border-radius:6px;
+            text-decoration:none;
+            font-size:14px;
+            margin-bottom:20px;
+        }
+
+        .add-btn:hover{
+            background:#8bb4d8;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            border-radius:10px;
+            overflow:hidden;
+        }
+
+        thead{
+            background:#A4C8E1;
+            color:white;
+        }
+
+        th, td{
+            padding:12px 10px;
+            text-align:center;
+            font-size:14px;
+        }
+
+        tr:nth-child(even){
+            background:#f9f9f9;
+        }
+
+        tr:hover{
+            background:#f0f8ff;
+        }
+
+        img{
+            border-radius:50%;
+            object-fit:cover;
+        }
+
+        a{
+            text-decoration:none;
+            font-size:13px;
+            margin:0 6px;
+        }
+
+        .edit{
+            color:#A4C8E1;
             font-weight:600;
         }
 

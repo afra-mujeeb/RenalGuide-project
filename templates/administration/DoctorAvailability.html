@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -53,6 +53,129 @@
         /* Availability status indicators */
         .status-available {
             color: #2E7D32;
+            font-weight: bold;
+        }
+        .status-unavailable {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 15px;
+            }
+            td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                text-align: left;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h2>Doctor Availability</h2>
+
+
+<table>
+    <tr>
+        <th>Doctor Name</th>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Status</th>
+    </tr>
+
+    {% for i in availability %}
+    <tr>
+        <td data-label="Doctor Name">{{ doctor.name }}</td>
+        <td data-label="Date">{{ i.date }}</td>
+        <td data-label="Start Time">{{ i.starttime }}</td>
+        <td data-label="End Time">{{ i.endtime }}</td>
+        <td data-label="Status">
+            {% if i.status == "available" %}
+                <span class="status-available">Available</span>
+            {% else %}
+                <span class="status-unavailable">Unavailable</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Availability</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0f0f10;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+            font-weight: bold;
+            color: #A4C8E1;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 1px solid #A4C8E1;
+            padding: 10px 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #A4C8E1;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f0f8ff;
+        }
+
+        tr:hover {
+            background-color: #e1f0fa;
+        }
+
+        /* Availability status indicators */
+        .status-available {
+            color: #A4C8E1;
             font-weight: bold;
         }
         .status-unavailable {

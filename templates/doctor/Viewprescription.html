@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -95,5 +95,259 @@
   </tbody>
 </table>
 
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Prescriptions</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #f5f9fc 0%, #E8F1F8 100%);
+      margin: 0;
+      padding: 20px;
+      color: #2c3e50;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #A4C8E1;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(164, 200, 225, 0.3);
+    }
+
+    h1 {
+      color: #1a5276;
+      margin-bottom: 5px;
+      font-size: 2.2rem;
+    }
+
+    .subtitle {
+      color: #2c3e50;
+      font-size: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      margin-bottom: 30px;
+      background-color: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background-color: #A4C8E1;
+      color: #1a5276;
+      font-weight: 600;
+      font-size: 15px;
+      position: sticky;
+      top: 0;
+    }
+
+    tr {
+      transition: all 0.2s ease;
+    }
+
+    tr:not(:last-child) {
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    tr:hover {
+      background-color: #f0f7ff;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(164, 200, 225, 0.2);
+    }
+
+    td {
+      color: #34495e;
+      font-size: 14px;
+    }
+
+    .prescription-content {
+      max-width: 400px;
+      white-space: normal;
+      line-height: 1.5;
+    }
+
+    .date-cell {
+      color: #7f8c8d;
+      font-size: 13px;
+    }
+
+    .patient-name {
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .footer-info {
+      text-align: center;
+      padding: 20px;
+      color: #7f8c8d;
+      font-size: 14px;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 30px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .table-container {
+        border-radius: 8px;
+      }
+      
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      
+      thead tr {
+        display: none;
+      }
+      
+      tr {
+        margin-bottom: 15px;
+        border: 1px solid #A4C8E1;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: white;
+      }
+      
+      td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      
+      td:last-child {
+        border-bottom: none;
+      }
+      
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        text-align: left;
+        font-weight: bold;
+        color: #1a5276;
+      }
+    }
+
+    @media print {
+      body {
+        background-color: white;
+      }
+      
+      .table-container {
+        box-shadow: none;
+      }
+      
+      tr:hover {
+        background-color: transparent;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Medical Prescriptions</h1>
+      <div class="subtitle">Patient prescription records and medication details</div>
+    </header>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Prescription Details</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in prescription %}
+          <tr>
+            <td data-label="Patient Name">
+              <span class="patient-name">{{ i.APPOINTMENTID.PATIENTID.name }}</span>
+            </td>
+            <td data-label="Prescription" class="prescription-content">{{ i.prescription }}</td>
+            <td data-label="Date" class="date-cell">{{ i.date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer-info">
+      <p>Prescription data as of {% now "F j, Y" %} | Confidential Medical Information</p>
+    </div>
+  </div>
+
+  <script>
+    // Add some interactive enhancements
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click effect on table rows
+      const tableRows = document.querySelectorAll('tbody tr');
+      tableRows.forEach(row => {
+        row.addEventListener('click', function() {
+          this.style.backgroundColor = '#e8f4fc';
+          setTimeout(() => {
+            this.style.backgroundColor = '';
+          }, 300);
+        });
+      });
+
+      // Add animation for new rows (simulating dynamic content)
+      const lastRow = tableRows[tableRows.length - 1];
+      if (lastRow) {
+        lastRow.style.animation = 'fadeIn 0.5s ease';
+      }
+    });
+
+    // Add CSS for fade-in animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>

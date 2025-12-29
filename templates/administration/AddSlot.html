@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -50,6 +50,74 @@
 
         button[type="submit"]:hover {
             background-color: #256629;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Add New Slot</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="date" name="date" placeholder="Date"><br>
+        <input type="time" name="time" placeholder="Time"><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Slot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f9fc;
+            color: #A4C8E1;
+            margin: 30px;
+        }
+
+        h2 {
+            color: #050505;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 2px solid #A4C8E1;
+            border-radius: 8px;
+            max-width: 400px;
+        }
+
+        input[type="date"],
+        input[type="time"] {
+            width: 350px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #A4C8E1;
+            border-radius: 4px;
+            font-size: 16px;
+           
+        }
+
+        button[type="submit"] {
+            background-color: #A4C8E1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            
+
+        }
+
+        button[type="submit"]:hover {
+            background-color: #8bb4d8;
         }
     </style>
 </head>

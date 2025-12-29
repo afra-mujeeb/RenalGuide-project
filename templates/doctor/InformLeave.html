@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Leave</title>
+    <title>Request Leave | Doctor Portal</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: #E8F5E9; /* Light green background */
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,29 +19,100 @@
         .container {
             background-color: #ffffff;
             width: 100%;
-            max-width: 500px;
-            padding: 30px 35px;
-            border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            max-width: 550px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(164, 200, 225, 0.2);
+            border: 1px solid rgba(164, 200, 225, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(164, 200, 225, 0.3);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #A4C8E1;
         }
 
         h2 {
-            text-align: center;
-            color: #2E7D32;
-            margin-bottom: 25px;
+            color: #2c5282;
+            margin-bottom: 8px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #4a5568;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .leave-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #A4C8E1;
+            display: block;
+        }
+
+        .section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         h3 {
-            color: #2E7D32;
-            margin-bottom: 10px;
+            color: #2c5282;
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .section-icon {
+            color: #A4C8E1;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
         }
 
         label {
             display: block;
-            font-weight: bold;
-            color: #1B5E20;
-            margin-top: 15px;
-            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c5282;
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        label::before {
+            font-size: 16px;
+        }
+
+        label[for="leave_from"]::before {
+            content: "📅";
+        }
+
+        label[for="leave_to"]::before {
+            content: "📅";
+        }
+
+        label[for="reason"]::before {
+            content: "📝";
         }
 
         input[type="text"],
@@ -49,85 +120,320 @@
         select,
         textarea {
             width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
             outline: none;
-            transition: border-color 0.3s ease;
-            font-size: 14px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+            color: #2d3748;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
         }
 
         input[type="text"]:focus,
         input[type="date"]:focus,
         select:focus,
         textarea:focus {
-            border-color: #2E7D32;
+            border-color: #A4C8E1;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(164, 200, 225, 0.2);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .date-range {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .date-range .form-group {
+            flex: 1;
+        }
+
+        .date-separator {
+            color: #A4C8E1;
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 28px;
         }
 
         button {
             width: 100%;
-            margin-top: 25px;
-            padding: 12px 0;
-            background-color: #2E7D32;
+            margin-top: 30px;
+            padding: 16px 0;
+            background: linear-gradient(135deg, #A4C8E1 0%, #8bb4d8 100%);
             color: #ffffff;
             font-size: 16px;
+            font-weight: 600;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 15px rgba(139, 180, 216, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
 
         button:hover {
-            background-color: #1B5E20;
-            transform: scale(1.03);
+            background: linear-gradient(135deg, #8bb4d8 0%, #76a1c9 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(139, 180, 216, 0.4);
         }
 
-        .section {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #ccc;
+        button:active {
+            transform: translateY(0);
         }
 
+        button::after {
+            content: "📤";
+            transition: transform 0.3s ease;
+        }
+
+        button:hover::after {
+            transform: translateY(-2px);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .leave-duration {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 13px;
+            color: #4a5568;
+            border: 1px solid rgba(164, 200, 225, 0.3);
+            display: none;
+        }
+
+        /* Date picker customization */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.5);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            background-color: #f8fafc;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            background-color: #edf2f7;
+        }
+
+        /* Responsive */
         @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
             .container {
-                padding: 20px;
+                padding: 30px 25px;
             }
-
+            
             h2 {
-                font-size: 22px;
+                font-size: 1.6rem;
             }
-
+            
+            .date-range {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .date-separator {
+                display: none;
+            }
+            
             button {
-                font-size: 14px;
-                padding: 10px 0;
+                padding: 14px 0;
             }
         }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .form-group {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>Leave Form</h2>
-
+        <div class="form-header">
+            <span class="leave-icon">🏖️</span>
+            <h2>Request Leave</h2>
+            <div class="subtitle">Submit your leave request for admin approval</div>
+        </div>
+        
         <form method="post">
             {% csrf_token %}
 
             <div class="section">
-                <h3>Doctor Availability</h3>
+                <div class="section-header">
+                    <span class="section-icon">📋</span>
+                    <h3>Leave Details</h3>
+                </div>
 
-                <label for="leave_from">Leave From</label>
-                <input type="date" name="leave_from" id="leave_from">
+                <div class="date-range">
+                    <div class="form-group">
+                        <label for="leave_from">Leave From</label>
+                        <input type="date" name="leave_from" id="leave_from" required>
+                    </div>
 
-                <label for="leave_to">Leave To</label>
-                <input type="date" name="leave_to" id="leave_to">
+                    <div class="date-separator">to</div>
 
-                <label for="reason">Reason</label>
-                <input type="text" name="reason" id="reason">
+                    <div class="form-group">
+                        <label for="leave_to">Leave To</label>
+                        <input type="date" name="leave_to" id="leave_to" required>
+                    </div>
+                </div>
+
+                <div id="leaveDuration" class="leave-duration"></div>
+
+                <div class="form-group">
+                    <label for="reason">Reason for Leave</label>
+                    <input type="text" name="reason" id="reason" placeholder="Enter reason for leave" required>
+                </div>
             </div>
 
-            <button type="submit">Submit to Admin</button>
+            <button type="submit">
+                <span>Submit Leave Request</span>
+            </button>
         </form>
+        
+        <div class="form-footer">
+            Your leave request will be reviewed by the administration
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            const fromInput = document.getElementById('leave_from');
+            const toInput = document.getElementById('leave_to');
+            
+            if (fromInput) {
+                fromInput.min = today;
+                if (!fromInput.value) {
+                    fromInput.value = today;
+                }
+            }
+            
+            if (toInput && fromInput) {
+                fromInput.addEventListener('change', function() {
+                    toInput.min = this.value;
+                    if (!toInput.value || toInput.value < this.value) {
+                        toInput.value = this.value;
+                    }
+                    calculateLeaveDuration();
+                });
+                
+                toInput.addEventListener('change', calculateLeaveDuration);
+                
+                if (!toInput.value) {
+                    toInput.value = today;
+                    toInput.min = today;
+                }
+            }
+            
+            // Calculate and display leave duration
+            function calculateLeaveDuration() {
+                const fromDate = new Date(fromInput.value);
+                const toDate = new Date(toInput.value);
+                const durationElement = document.getElementById('leaveDuration');
+                
+                if (fromInput.value && toInput.value && fromDate <= toDate) {
+                    const diffTime = Math.abs(toDate - fromDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 to include both days
+                    
+                    durationElement.style.display = 'block';
+                    durationElement.innerHTML = `Leave duration: <strong>${diffDays} day${diffDays !== 1 ? 's' : ''}</strong>`;
+                    
+                    if (diffDays > 30) {
+                        durationElement.innerHTML += '<br><small>⚠️ Long leave request - may require additional approval</small>';
+                    }
+                } else {
+                    durationElement.style.display = 'none';
+                }
+            }
+            
+            // Calculate duration on page load
+            calculateLeaveDuration();
+            
+            // Add focus effects to inputs
+            const inputs = document.querySelectorAll('input[type="text"], input[type="date"]');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Form validation
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                const fromDate = new Date(fromInput.value);
+                const toDate = new Date(toInput.value);
+                const reason = document.getElementById('reason').value.trim();
+                
+                if (fromDate > toDate) {
+                    alert('Leave "From" date must be before or equal to "To" date.');
+                    e.preventDefault();
+                    fromInput.focus();
+                    return;
+                }
+                
+                if (!reason) {
+                    alert('Please provide a reason for leave.');
+                    e.preventDefault();
+                    document.getElementById('reason').focus();
+                    return;
+                }
+                
+                // Show confirmation
+                if (!confirm('Submit this leave request for admin approval?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

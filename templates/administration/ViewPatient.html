@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -55,6 +55,124 @@
 
         tbody tr:hover {
             background-color: #c8e6c9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tr {
+                margin-bottom: 15px;
+            }
+            td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                text-align: left;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Patient List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>SI NO</th>
+                    <th>Patient Name</th>
+                    <th>Age</th>
+                    <th>Sex</th>
+                    <th>Caretaker Name</th>
+                    <th>Caretaker Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in patient %}
+                <tr>
+                    <td data-label="SI NO">{{ forloop.counter }}</td>
+                    <td data-label="Patient Name">{{ i.name }}</td>
+                    <td data-label="Age">{{ i.age }}</td>
+                    <td data-label="Sex">{{ i.sex }}</td>
+                    <td data-label="Caretaker Name">{{ i.CARETAKERID.name }}</td>
+                    <td data-label="Caretaker Phone Number">{{ i.CARETAKERID.phonenumber }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Patients</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0d0e0e;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background-color: #A4C8E1;
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f0f8ff;
+        }
+
+        tbody tr:hover {
+            background-color: #e1f0fa;
         }
 
         /* Responsive */

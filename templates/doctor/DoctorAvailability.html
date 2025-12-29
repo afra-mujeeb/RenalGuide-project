@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -123,8 +123,8 @@
         <td>{{ i.endtime }}</td>
         <td>{{ i.status }}</td>
         <td>
-            <!-- Delete button pointing to Django view -->
-            <a href="/DeleteAvailability/{{ i.id }}" class="delete" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
+            Delete button pointing to Django view -->
+            <!-- <a href="/DeleteAvailability/{{ i.id }}" class="delete" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
         </td>
     </tr>
     {% empty %}
@@ -134,5 +134,381 @@
     {% endfor %}
 </table>
 
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Availability</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(164, 200, 225, 0.15);
+            border: 1px solid rgba(164, 200, 225, 0.2);
+        }
+
+        h2 {
+            color: #2c5282;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #4a5568;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .availability-count {
+            text-align: center;
+            color: #2c5282;
+            font-weight: 500;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(164, 200, 225, 0.1);
+        }
+
+        th, td {
+            padding: 16px 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th {
+            background: linear-gradient(135deg, #A4C8E1 0%, #8bb4d8 100%);
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid #76a1c9;
+        }
+
+        td {
+            color: #2d3748;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr {
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #f0f7ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(164, 200, 225, 0.2);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            min-width: 80px;
+        }
+
+        .status-available {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-busy {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-unavailable {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .add-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #A4C8E1 0%, #8bb4d8 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(139, 180, 216, 0.3);
+        }
+
+        .add-btn:hover {
+            background: linear-gradient(135deg, #8bb4d8 0%, #76a1c9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 180, 216, 0.4);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+        }
+
+        .add-btn::before {
+            content: "+";
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            display: inline-block;
+            color: #ffffff;
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(229, 62, 62, 0.2);
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #c53030 0%, #9b2c2c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #718096;
+            font-style: italic;
+            padding: 30px;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        /* Animation for table rows */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        tbody tr {
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        tbody tr:nth-child(5) { animation-delay: 0.5s; }
+        tbody tr:nth-child(n+6) { animation-delay: 0.6s; }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .header-row {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            h2 {
+                font-size: 1.6rem;
+            }
+            
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            
+            thead tr {
+                display: none;
+            }
+            
+            tr {
+                margin-bottom: 20px;
+                background-color: #ffffff;
+                border-radius: 12px;
+                box-shadow: 0 4px 10px rgba(164, 200, 225, 0.15);
+                padding: 15px;
+                border: 1px solid #e2e8f0;
+            }
+            
+            td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            td:last-child {
+                border-bottom: none;
+                text-align: center;
+                padding-left: 0;
+            }
+            
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                text-align: left;
+                font-weight: 600;
+                color: #2c5282;
+                font-size: 13px;
+            }
+            
+            .status, .delete-btn {
+                float: right;
+                margin-top: 5px;
+            }
+            
+            td:last-child .delete-btn {
+                float: none;
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-row">
+            <div>
+                <h2>Doctor Availability</h2>
+                <div class="subtitle">Manage your schedule and appointment slots</div>
+            </div>
+            <a href="/InformAvailability" class="add-btn">Add Availability</a>
+        </div>
+        
+        <div class="availability-count">
+            {% if availability %}
+                {{ availability|length }} availability slot{{ availability|length|pluralize:"s" }}
+            {% endif %}
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in availability %}
+                <tr>
+                    <td data-label="Date">{{ i.date }}</td>
+                    <td data-label="Start Time">{{ i.starttime }}</td>
+                    <td data-label="End Time">{{ i.endtime }}</td>
+                    <td data-label="Status">
+                        <span class="status">{{ i.status }}</span>
+                    </td>
+                    <td>
+                        <a href="/DeleteAvailability/{{ i.id }}" class="delete-btn" onclick="return confirm('Are you sure you want to delete this availability slot?');">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-message">No availability records found. Click "Add Availability" to schedule your time slots.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Enhance status colors based on status text
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusElements = document.querySelectorAll('.status');
+            
+            statusElements.forEach(element => {
+                const statusText = element.textContent.trim().toLowerCase();
+                
+                // Add appropriate status class based on text
+                if (statusText.includes('available') || statusText.includes('free')) {
+                    element.classList.add('status-available');
+                } else if (statusText.includes('busy') || statusText.includes('occupied')) {
+                    element.classList.add('status-busy');
+                } else if (statusText.includes('unavailable') || statusText.includes('off')) {
+                    element.classList.add('status-unavailable');
+                } else {
+                    element.classList.add('status-available');
+                }
+            });
+            
+            // Add click effect to table rows
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on delete button
+                    if (!e.target.closest('.delete-btn')) {
+                        this.style.backgroundColor = '#e8f4fc';
+                        setTimeout(() => {
+                            this.style.backgroundColor = '';
+                        }, 300);
+                    }
+                });
+            });
+            
+            // Update availability count text
+            const availabilityCount = document.querySelector('.availability-count');
+            if (availabilityCount) {
+                const rows = document.querySelectorAll('tbody tr:not(.empty-message)');
+                if (rows.length === 0) {
+                    availabilityCount.style.display = 'none';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

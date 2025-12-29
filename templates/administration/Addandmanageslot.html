@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -53,6 +53,103 @@
 
         a {
             color: #2E7D32;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Slot Management</h2>
+    <button class="btn" onclick="window.location='/AddSlot'">Add new slot</button><br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>DATE</th>
+                <th>TIME</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in slot %}
+            <tr>
+                <td><span>{{ i.date }}</span></td>
+                <td><span>{{ i.time }}</span></td>
+                <td>
+                    <span>
+                        <a href="/EditSlot/{{ i.id }}">Edit</a>
+                        <a href="/DeleteSlot/{{ i.id }}" onclick="return confirm('Are you sure you want to delete')">Delete</a>
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slot Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f9fc;
+            color: #A4C8E1;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #0b0b0b;
+        }
+
+        .btn {
+            background-color: #A4C8E1;
+            color: rgb(12, 12, 12);
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #8bb4d8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #A4C8E1;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #A4C8E1;
+            color: white;
+        }
+
+        td span {
+            color: black; /* Only the text inside td */
+        }
+
+        a {
+            color: #A4C8E1;
             text-decoration: none;
             margin-right: 10px;
         }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -117,5 +117,586 @@
   </tbody>
 </table>
 
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient List - RenalGuide</title>
+  <style>
+    :root {
+      --primary-color: #A4C8E1;
+      --primary-dark: #8bb4d8;
+      --primary-light: #e1f0fa;
+      --primary-bg: #f8fbfe;
+      --text-dark: #1a3c5e;
+      --text-light: #5a7c9a;
+      --border-light: #d4e7f7;
+      --white: #ffffff;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(164, 200, 225, 0.25);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--primary-bg) 0%, #f0f8ff 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 30px;
+    }
+
+    .page-header {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--primary-light);
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .page-header h1 i {
+      color: var(--primary-color);
+      font-size: 32px;
+    }
+
+    .page-header p {
+      color: var(--text-light);
+      font-size: 16px;
+      margin-left: 47px;
+    }
+
+    .patients-table-container {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(164, 200, 225, 0.2);
+      margin-top: 20px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .patients-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 800px;
+    }
+
+    .table-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .table-header th {
+      padding: 18px 15px;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: left;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .table-header th:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .table-body tr {
+      transition: var(--transition);
+      border-bottom: 1px solid rgba(164, 200, 225, 0.1);
+    }
+
+    .table-body tr:nth-child(even) {
+      background: rgba(164, 200, 225, 0.03);
+    }
+
+    .table-body tr:hover {
+      background: var(--primary-light);
+      transform: scale(1.002);
+    }
+
+    .table-body td {
+      padding: 16px 15px;
+      font-size: 15px;
+      color: var(--text-dark);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .table-body td:first-child {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .patient-name {
+      font-weight: 600;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .patient-name i {
+      color: var(--primary-color);
+      font-size: 16px;
+    }
+
+    .patient-age {
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .patient-sex {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sex-male {
+      background: rgba(164, 200, 225, 0.2);
+      color: #1a73e8;
+    }
+
+    .sex-female {
+      background: rgba(255, 182, 193, 0.2);
+      color: #e91e63;
+    }
+
+    .patient-diagnosis {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--text-dark);
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, #6fa0cc 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(164, 200, 225, 0.4);
+    }
+
+    .action-btn i {
+      font-size: 12px;
+    }
+
+    /* Patient Status Indicators */
+    .patient-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-active {
+      background: #4CAF50;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+
+    .status-inactive {
+      background: #9E9E9E;
+      box-shadow: 0 0 0 3px rgba(158, 158, 158, 0.2);
+    }
+
+    /* No Patients State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+      font-size: 16px;
+      background: linear-gradient(135deg, rgba(164, 200, 225, 0.05) 0%, rgba(139, 180, 216, 0.03) 100%);
+      border-radius: 16px;
+      border: 2px dashed rgba(164, 200, 225, 0.3);
+    }
+
+    .empty-state i {
+      font-size: 48px;
+      color: var(--primary-light);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .container {
+        padding: 20px;
+        border-radius: 15px;
+      }
+      
+      .page-header h1 {
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      .page-header h1 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .page-header p {
+        margin-left: 0;
+        font-size: 14px;
+      }
+      
+      /* Mobile table styles */
+      .patients-table {
+        display: block;
+      }
+      
+      .patients-table thead {
+        display: none;
+      }
+      
+      .patients-table tbody,
+      .patients-table tr {
+        display: block;
+        width: 100%;
+      }
+      
+      .patients-table tr {
+        margin-bottom: 20px;
+        padding: 20px;
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(164, 200, 225, 0.1);
+      }
+      
+      .patients-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        text-align: right;
+        border-bottom: 1px solid rgba(164, 200, 225, 0.1);
+      }
+      
+      .patients-table td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-dark);
+        text-align: left;
+        flex: 1;
+        margin-right: 20px;
+      }
+      
+      .patients-table td:last-child {
+        border-bottom: none;
+        justify-content: center;
+      }
+      
+      .action-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .page-header h1 {
+        font-size: 20px;
+      }
+      
+      .table-body td {
+        font-size: 14px;
+      }
+      
+      .action-btn {
+        padding: 10px 15px;
+        font-size: 13px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page-header {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .patients-table-container {
+      animation: fadeIn 0.7s ease-out 0.1s both;
+    }
+
+    .table-body tr {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Scrollbar Styling */
+    .table-wrapper::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-track {
+      background: rgba(164, 200, 225, 0.1);
+      border-radius: 4px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: rgba(164, 200, 225, 0.3);
+      border-radius: 4px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: rgba(164, 200, 225, 0.5);
+    }
+  </style>
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>
+      <i class="fas fa-user-injured"></i>
+      <div>
+        Patient List
+        
+      </div>
+    </h1>
+  </div>
+
+  <!-- Patients Table -->
+  <div class="patients-table-container">
+    <div class="table-wrapper">
+      <table class="patients-table">
+        <thead class="table-header">
+          <tr>
+            <th>#</th>
+            <th>Patient Information</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Diagnosis</th>
+            <th>Medical Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-body">
+          {% if patients %}
+            {% for i in patients %}
+            <tr>
+              <td data-label="#">{{ forloop.counter }}</td>
+              <td data-label="Patient Information">
+                <div class="patient-name">
+                  <i class="fas fa-user"></i>
+                  {{ i.PATIENTID.name }}
+                  <div class="patient-status">
+                    <span class="status-indicator status-active"></span>
+                    <span class="status-text" style="font-size: 12px; color: var(--text-light);">Active</span>
+                  </div>
+                </div>
+              </td>
+              <td data-label="Age" class="patient-age">
+                {{ i.PATIENTID.age }} years
+              </td>
+              <td data-label="Gender">
+                <span class="patient-sex {% if i.PATIENTID.sex|lower == 'male' %}sex-male{% else %}sex-female{% endif %}">
+                  {{ i.PATIENTID.sex }}
+                </span>
+              </td>
+              <td data-label="Diagnosis" class="patient-diagnosis" title="{{ i.PATIENTID.diagnosis }}">
+                {{ i.PATIENTID.diagnosis|default:"Not specified" }}
+              </td>
+              <td data-label="Actions">
+                <a href="/Viewprescription" class="action-btn">
+                  <i class="fas fa-prescription"></i>
+                  View Prescription
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <!-- No Patients State -->
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">
+                  <i class="fas fa-user-injured"></i>
+                  <h4>No Patients Available</h4>
+                  <p>There are currently no patients assigned to your care.</p>
+                </div>
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add hover effects to table rows
+    const tableRows = document.querySelectorAll('.table-body tr:not(:last-child)');
+    tableRows.forEach(row => {
+      row.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 8px 25px rgba(164, 200, 225, 0.2)';
+      });
+      
+      row.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = 'none';
+      });
+      
+      // Add click effect
+      row.addEventListener('click', function(e) {
+        // Don't trigger if clicking on action button
+        if (!e.target.closest('.action-btn')) {
+          this.style.backgroundColor = 'rgba(164, 200, 225, 0.1)';
+          setTimeout(() => {
+            this.style.backgroundColor = '';
+          }, 300);
+        }
+      });
+    });
+    
+    // Enhance action buttons
+    const actionButtons = document.querySelectorAll('.action-btn');
+    actionButtons.forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        const icon = this.querySelector('i');
+        if (icon) {
+          icon.style.transform = 'translateX(3px)';
+        }
+      });
+      
+      btn.addEventListener('mouseleave', function() {
+        const icon = this.querySelector('i');
+        if (icon) {
+          icon.style.transform = 'translateX(0)';
+        }
+      });
+    });
+    
+    // Add tooltips for truncated diagnosis
+    const diagnosisCells = document.querySelectorAll('.patient-diagnosis');
+    diagnosisCells.forEach(cell => {
+      const text = cell.textContent;
+      if (text.length > 30) {
+        cell.title = text;
+      }
+    });
+    
+    // Highlight active row with delay
+    let activeRow = null;
+    tableRows.forEach(row => {
+      row.addEventListener('click', function() {
+        if (activeRow && activeRow !== this) {
+          activeRow.classList.remove('active');
+        }
+        
+        this.classList.add('active');
+        activeRow = this;
+      });
+    });
+    
+    // Add CSS for active row
+    const style = document.createElement('style');
+    style.textContent = `
+      .table-body tr.active {
+        background: linear-gradient(135deg, rgba(164, 200, 225, 0.15) 0%, rgba(164, 200, 225, 0.1) 100%) !important;
+        border-left: 4px solid var(--primary-color);
+        position: relative;
+      }
+      .table-body tr.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        border-radius: 0 4px 4px 0;
+      }
+    `;
+    document.head.appendChild(style);
+  });
+</script>
 </body>
 </html>

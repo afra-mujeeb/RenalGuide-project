@@ -8,9 +8,9 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: #d6ffc1;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
             margin: 0;
-            padding: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,87 +19,266 @@
 
         .profile-container {
             background: #ffffff;
-            width: 400px;
-            padding: 30px;
+            width: 450px;
+            padding: 35px;
             border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(164, 200, 225, 0.2);
             text-align: center;
+            border: 1px solid rgba(164, 200, 225, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .profile-container img {
-            width: 120px;
-            height: 120px;
+        .profile-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(164, 200, 225, 0.3);
+        }
+
+        .profile-header {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #A4C8E1;
+        }
+
+        .profile-picture {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            border: 5px solid #2E7D32;
             object-fit: cover;
+            border: 5px solid #A4C8E1;
+            box-shadow: 0 8px 20px rgba(164, 200, 225, 0.4);
+            transition: transform 0.3s ease;
         }
 
-        h2 input {
+        .profile-picture:hover img {
+            transform: scale(1.05);
+        }
+
+        .profile-picture::after {
+            content: "👨‍⚕️";
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #A4C8E1;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .doctor-name {
             margin-top: 15px;
-            font-size: 24px;
-            font-weight: bold;
+        }
+
+        .doctor-name input {
+            font-size: 26px;
+            font-weight: 700;
             width: 100%;
             text-align: center;
             border: none;
-            border-bottom: 2px solid #2E7D32;
+            border-bottom: 3px solid #A4C8E1;
             outline: none;
             background: transparent;
+            color: #2c5282;
+            padding-bottom: 8px;
+            transition: border-color 0.3s ease;
+        }
+
+        .doctor-name input:focus {
+            border-bottom-color: #8bb4d8;
         }
 
         .details {
             text-align: left;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
-        .details p {
-            font-size: 16px;
-            background: #f5f7f9;
-            padding: 10px 12px;
-            border-radius: 10px;
-            margin-bottom: 12px;
+        .detail-item {
+            font-size: 15px;
+            background: #f8fafc;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
         }
 
-        .details span {
-            font-weight: bold;
-            color: #2E7D32;
+        .detail-item:hover {
+            background: #f0f7ff;
+            transform: translateX(5px);
+            border-color: #A4C8E1;
         }
 
-        .details input {
-            width: 60%;
-            padding: 6px 8px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+        .detail-item span {
+            font-weight: 600;
+            color: #2c5282;
+            min-width: 120px;
+        }
+
+        .detail-item input {
+            width: 65%;
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             outline: none;
+            font-size: 15px;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .detail-item input:focus {
+            border-color: #A4C8E1;
+            box-shadow: 0 0 0 3px rgba(164, 200, 225, 0.2);
         }
 
         .btn {
-            margin-top: 25px;
-            background: #2E7D32;
+            margin-top: 30px;
+            background: linear-gradient(135deg, #A4C8E1 0%, #8bb4d8 100%);
             color: white;
             border: none;
-            padding: 12px 40px;
+            padding: 14px 45px;
             font-size: 16px;
-            border-radius: 8px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(139, 180, 216, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #8bb4d8 0%, #76a1c9 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(139, 180, 216, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .profile-title {
+            color: #2c5282;
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0.8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Form styling */
+        form {
+            margin: 0;
+        }
+
+        /* File upload styling */
+        .file-upload {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-upload label {
+            background: #A4C8E1;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 13px;
             cursor: pointer;
             transition: background 0.3s ease;
         }
 
-        .btn:hover {
-            background: #1B5E20;
+        .file-upload label:hover {
+            background: #8bb4d8;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
         }
 
         /* Responsive */
         @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
             .profile-container {
-                width: 90%;
-                padding: 20px;
+                width: 95%;
+                padding: 25px;
             }
-            .details input {
-                width: 55%;
+            
+            .profile-picture {
+                width: 120px;
+                height: 120px;
             }
+            
+            .doctor-name input {
+                font-size: 22px;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .detail-item span {
+                min-width: auto;
+                font-size: 14px;
+            }
+            
+            .detail-item input {
+                width: 100%;
+            }
+            
+            .btn {
+                padding: 12px 35px;
+                width: 100%;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .detail-item:nth-child(1) { animation-delay: 0.1s; }
+        .detail-item:nth-child(2) { animation-delay: 0.2s; }
+        .detail-item:nth-child(3) { animation-delay: 0.3s; }
+        .detail-item:nth-child(4) { animation-delay: 0.4s; }
+        .detail-item:nth-child(5) { animation-delay: 0.5s; }
+        .detail-item:nth-child(6) { animation-delay: 0.6s; }
+
+        .detail-item {
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0;
         }
     </style>
 </head>
@@ -107,23 +286,97 @@
 <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="profile-container">
-        <!-- Doctor Profile Image -->
-        <img src="{{ doctor.image.url }}" alt="Doctor Image">
-
-        <!-- Doctor Name -->
-        <h2><input type="text" value="{{ doctor.name }}" name="name"></h2>
-
-        <div class="details">
-            <p><span>Age:</span><input type="text" value="{{ doctor.age }}" name="age"></p>
-            <p><span>Phone:</span><input type="text" value="{{ doctor.phonenumber }}" name="phonenumber"></p>
-            <p><span>Sex:</span><input type="text" value="{{ doctor.sex }}" name="sex"></p>
-            <p><span>Email:</span><input type="text" value="{{ doctor.email }}" name="email"></p>
-            <p><span>Qualification:</span><input type="text" value="{{ doctor.qualification }}" name="qualification"></p>
-            <p><span>Experience:</span><input type="text" value="{{ doctor.experience }}" name="experience"></p>
+        <div class="profile-header">
+            <!-- Doctor Profile Image -->
+            <div class="profile-picture">
+                <img src="{{ doctor.image.url }}" alt="Doctor Image">
+            </div>
+            
+            <!-- Doctor Name -->
+            <div class="doctor-name">
+                <input type="text" value="{{ doctor.name }}" name="name">
+                <div class="profile-title">Medical Professional</div>
+            </div>
         </div>
 
-        <button class="btn" type="submit">Edit Profile</button>
+        <div class="details">
+            <div class="detail-item">
+                <span>Age:</span>
+                <input type="text" value="{{ doctor.age }}" name="age">
+            </div>
+            <div class="detail-item">
+                <span>Phone:</span>
+                <input type="text" value="{{ doctor.phonenumber }}" name="phonenumber">
+            </div>
+            <div class="detail-item">
+                <span>Gender:</span>
+                <input type="text" value="{{ doctor.sex }}" name="sex">
+            </div>
+            <div class="detail-item">
+                <span>Email:</span>
+                <input type="email" value="{{ doctor.email }}" name="email">
+            </div>
+            <div class="detail-item">
+                <span>Qualification:</span>
+                <input type="text" value="{{ doctor.qualification }}" name="qualification">
+            </div>
+            <div class="detail-item">
+                <span>Experience:</span>
+                <input type="text" value="{{ doctor.experience }}" name="experience">
+            </div>
+            
+            <!-- Optional: File upload for image change -->
+            <div class="file-upload">
+                <label for="image-upload">Change Photo</label>
+                <input type="file" id="image-upload" name="image" accept="image/*">
+            </div>
+        </div>
+
+        <button class="btn" type="submit">Update Profile</button>
     </div>
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add focus effects to input fields
+        const inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateX(8px)';
+                this.parentElement.style.boxShadow = '0 4px 12px rgba(164, 200, 225, 0.2)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateX(5px)';
+                this.parentElement.style.boxShadow = 'none';
+            });
+        });
+        
+        // File upload preview
+        const fileInput = document.getElementById('image-upload');
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = document.querySelector('.profile-picture img');
+                        img.src = event.target.result;
+                        img.style.transform = 'scale(1.1)';
+                        setTimeout(() => {
+                            img.style.transform = 'scale(1)';
+                        }, 300);
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+        }
+        
+        // Add animation to form elements
+        const detailItems = document.querySelectorAll('.detail-item');
+        detailItems.forEach((item, index) => {
+            item.style.animationDelay = `${0.1 + (index * 0.1)}s`;
+        });
+    });
+</script>
 </body>
 </html>
