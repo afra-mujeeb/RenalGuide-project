@@ -908,3 +908,36 @@ class ViewPrePostHD(APIView):
             "pre_hd": pre_serializer.data,
             "post_hd": post_serializer.data
         }, status=status.HTTP_200_OK)
+
+
+class ViewPrescription(APIView):
+    def get(self, request, id):
+        c=PrescriptionTable.objects.filter(APPOINTMENTID__PATIENTID__id=id)
+        d=PrescriptionTableSerializer(c,many=True)
+        return Response(d.data,status=status.HTTP_200_OK)
+    
+
+
+class ViewProfile(APIView):
+    def get(self, request, id):
+        c = NurseTable.objects.get(LOGINID__id = id)
+        d = NurseSerializer(c)
+        return Response(d.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, id):
+        print('+++++++++++++++++++++++++', request.data)
+        c = NurseTable.objects.get(LOGINID__id = id)
+        serializer = NurseSerializer(c, data=request.data) 
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class CretakerPatientCount(APIView):
+    def get(self, request, id):
+        c = CountTable.objects.filter(PATIENTID__CARETAKERID__LOGINID__id = id).first()
+        d = CountSerializer(c)
+        print(d.data)
+        return Response(d.data, status=status.HTTP_200_OK)

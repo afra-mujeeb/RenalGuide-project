@@ -119,6 +119,9 @@ urlpatterns = [
     path('addcount/<int:id>', AddCountAPI.as_view()),
     path('hd/<int:patient_id>', PrePostHDCombinedAPI.as_view(),),
     path('viewhd/<int:patient_id>', ViewPrePostHD.as_view(),),
+    path('prescription/<int:id>', ViewPrescription.as_view(),),
+    path('profile/<int:id>', ViewProfile.as_view(),),
+    path('c/<int:id>', CretakerPatientCount.as_view(),),
     
     
 

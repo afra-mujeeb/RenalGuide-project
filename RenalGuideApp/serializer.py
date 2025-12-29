@@ -91,9 +91,11 @@ class MessageTableSerializer(ModelSerializer):
         model = MessageTable
         fields=['message']
 class PrescriptionTableSerializer(ModelSerializer):
+    name=serializers.CharField(source="APPOINTMENTID.DOCTORID.name")
+    presdate=serializers.CharField(source="APPOINTMENTID.bookingdate")
     class Meta:
         model = PrescriptionTable
-        fields=['prescription','date']
+        fields=['prescription','date','name', 'presdate']
 class DietTableSerializer(ModelSerializer):
     class Meta:
         model = DietTable
@@ -169,3 +171,9 @@ class PostHDTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostHDTable
         fields = "__all__"	
+
+
+class NurseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NurseTable
+        fields = '__all__'
